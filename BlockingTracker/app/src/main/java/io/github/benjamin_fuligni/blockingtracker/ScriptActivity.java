@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class ScriptActivity extends AppCompatActivity {
 
@@ -22,7 +23,18 @@ public class ScriptActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                TextView tv = (TextView) findViewById(R.id.textView);
+                int start = 0;
+                int end = tv.getText().length();
+                CharSequence selection = "";
+                if (tv.isFocused()) {
+                    int selStart = tv.getSelectionStart();
+                    int selEnd = tv.getSelectionEnd();
+                    start = Math.max(0, Math.min(selEnd, selStart));
+                    end = Math.max(0, Math.max(selEnd, selStart));
+                    selection = tv.getText().subSequence(start, end);
+                }
+                Snackbar.make(view, selection, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

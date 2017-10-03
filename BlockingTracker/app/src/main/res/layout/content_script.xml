@@ -12,14 +12,14 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
             android:fillViewport="true"
+            android:scrollbars="vertical"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
@@ -28,7 +28,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:textIsSelectable="true"
                 android:text="ACT I\n
 \n
 SCENE I. Elsinore. A platform before the castle.\n
@@ -307,6 +306,7 @@ MARCELLUS\n
 \tWhere we shall find him most conveniently.\n
 \n
 \tExeunt\n"
+                android:textIsSelectable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
