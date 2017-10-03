@@ -33,6 +33,9 @@ public class ScriptActivity extends AppCompatActivity {
                     start = Math.max(0, Math.min(selEnd, selStart));
                     end = Math.max(0, Math.max(selEnd, selStart));
                     selection = tv.getText().subSequence(start, end);
+                    String newText = new StringBuilder().append(tv.getText().subSequence(0, start))
+                            .append(selection).append(" HELLO ").append(tv.getText().subSequence(end+1, tv.getText().length())).toString();
+                    tv.setText(newText);
                 }
                 Snackbar.make(view, selection, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
