@@ -28,6 +28,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
+                android:textIsSelectable="true"
                 android:text="ACT I\n
 \n
 SCENE I. Elsinore. A platform before the castle.\n
