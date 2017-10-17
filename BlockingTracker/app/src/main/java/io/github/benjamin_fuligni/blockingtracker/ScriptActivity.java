@@ -1,16 +1,19 @@
 package io.github.benjamin_fuligni.blockingtracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 public class ScriptActivity extends AppCompatActivity {
+    public static final String TEXT_SELECTED = "io.github.benjamin_fuligni.TEXTSELECTED";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,12 @@ public class ScriptActivity extends AppCompatActivity {
                 }
                 Snackbar.make(view, selection, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                Log.d("**** In MainActivity", "Going to Set View");
+                Intent intent = new Intent(ScriptActivity.this, SetActivity.class);
+                Log.d("**** In MainActivity", selection.toString());
+                intent.putExtra(TEXT_SELECTED, selection.toString());
+                startActivity(intent);
             }
         });
     }
