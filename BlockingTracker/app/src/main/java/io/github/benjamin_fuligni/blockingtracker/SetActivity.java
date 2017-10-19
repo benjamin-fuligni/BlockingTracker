@@ -50,14 +50,17 @@ public class SetActivity extends AppCompatActivity {
 
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
+            //clipdata
             CharSequence x = "X";
             ClipData.Item item =  new ClipData.Item(x);
             java.lang.String stuff[] = {"text/plain"};
             ClipDescription cd = new ClipDescription(x, stuff);
             ClipData data = new ClipData(cd, item);
+
+            //ACTION_DOWN refers to the beginning of a touch
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
+                view.startDrag(data, shadowBuilder, view, 0); //startDrag is deprecated
                 return true;
             } else {
                 return false;
@@ -66,17 +69,18 @@ public class SetActivity extends AppCompatActivity {
     }
 
     private class dropListener implements View.OnDragListener {
-
+        //used for universality - specific to type of drag but not specific drag
         View draggedView;
         TextView dropped;
 
+        //need to define onDrag method
         @Override
         public boolean onDrag(View v, DragEvent event) {
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
                     draggedView = (View) event.getLocalState();
                     dropped = (TextView) draggedView;
-                    draggedView.setVisibility(View.INVISIBLE);
+                    //draggedView.setVisibility(View.INVISIBLE);
                     break;
                 case DragEvent.ACTION_DRAG_ENTERED:
                     break;
