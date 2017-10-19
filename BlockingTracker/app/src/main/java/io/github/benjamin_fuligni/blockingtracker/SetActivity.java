@@ -69,7 +69,7 @@ public class SetActivity extends AppCompatActivity {
     }
 
     private class dropListener implements View.OnDragListener {
-        //used for universality - specific to type of drag but not specific drag
+        //used for modularity - specific to type of drag but not specific drag
         View draggedView;
         TextView dropped;
 
