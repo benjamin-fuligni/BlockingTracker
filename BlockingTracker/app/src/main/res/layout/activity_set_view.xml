@@ -20,7 +20,15 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_set_view" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cropToPadding="true"
+        app:srcCompat="@drawable/floorplan" />
+
+    <include layout="@layout/content_set_view"
+        android:id="@+id/include" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
