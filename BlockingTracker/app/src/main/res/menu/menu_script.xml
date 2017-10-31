@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="io.github.benjamin_fuligni.blockingtracker.ScriptActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/changeFloorplan"
         android:orderInCategory="100"
+        android:title="Change Floorplan"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="200"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>
