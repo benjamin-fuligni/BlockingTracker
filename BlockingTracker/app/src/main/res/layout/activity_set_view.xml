@@ -20,13 +20,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cropToPadding="true"
-        app:srcCompat="@drawable/floorplan" />
-
     <include layout="@layout/content_set_view"
         android:id="@+id/include" />
 

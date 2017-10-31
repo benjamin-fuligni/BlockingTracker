@@ -16,6 +16,9 @@ import android.view.View.DragShadowBuilder;
 import android.widget.TextView;
 import android.view.View.OnDragListener;
 
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+
 public class SetActivity extends AppCompatActivity {
 
     private TextView tvS;
@@ -44,6 +47,9 @@ public class SetActivity extends AppCompatActivity {
         tvS.setOnTouchListener(new TouchListener());
         tvD = (TextView) findViewById(R.id.textView3);
         tvD.setOnDragListener(new dropListener());
+
+        SubsamplingScaleImageView imageView = (SubsamplingScaleImageView)findViewById(R.id.imageView);
+        imageView.setImage(ImageSource.resource(R.drawable.balch));
     }
 
     private final class TouchListener implements View.OnTouchListener {
