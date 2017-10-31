@@ -25,7 +25,7 @@ import android.widget.TextView;
 import android.view.View.OnDragListener;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
-import io.github.benjamin_fuligni.blockingtracker.PinView;
+import com.davemorrissey.labs.subscaleview.PinView;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.content.Context;
