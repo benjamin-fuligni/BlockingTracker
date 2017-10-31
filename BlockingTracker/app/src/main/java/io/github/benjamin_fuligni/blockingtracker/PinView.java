@@ -1,4 +1,4 @@
-package io.github.benjamin_fuligni.blockingtracker;
+package com.davemorrissey.labs.subscaleview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+
+import io.github.benjamin_fuligni.blockingtracker.R;
 
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
@@ -40,7 +42,7 @@ public class PinView extends SubsamplingScaleImageView {
 
     private void initialise() {
         float density = getResources().getDisplayMetrics().densityDpi;
-        pin = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
+        pin = BitmapFactory.decodeResource(this.getResources(), R.drawable.balch);
         float w = (density/420f) * pin.getWidth();
         float h = (density/420f) * pin.getHeight();
         pin = Bitmap.createScaledBitmap(pin, (int)w, (int)h, true);

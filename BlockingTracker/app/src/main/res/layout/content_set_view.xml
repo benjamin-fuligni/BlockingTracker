@@ -14,7 +14,7 @@
         tools:layout_editor_absoluteX="9dp"
         tools:layout_editor_absoluteY="8dp">
 
-        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        <com.davemorrissey.labs.subscaleview.PinView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
