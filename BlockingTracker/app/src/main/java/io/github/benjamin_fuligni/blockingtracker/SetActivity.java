@@ -62,6 +62,7 @@ public class SetActivity extends AppCompatActivity {
         imageView.setImage(ImageSource.resource(R.drawable.balch));
 
         pv = new PinView(this);
+        pv.setLayoutParams(new Toolbar.LayoutParams(50, 50));
         PointF p = new PointF((float)50, (float)50);
         pv.setPin(p);
         pv.setOnTouchListener(new TouchListener());
