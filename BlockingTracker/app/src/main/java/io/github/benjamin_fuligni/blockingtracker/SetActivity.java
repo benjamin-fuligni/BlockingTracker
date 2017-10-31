@@ -71,7 +71,6 @@ public class SetActivity extends AppCompatActivity {
         PinView imageView = (PinView)findViewById(R.id.imageView);
         imageView.setImage(ImageSource.resource(R.drawable.balch));
         imageView.setPin(new PointF(100f, 100f));
-
         /*
         pv = new PinView(this);
         pv.setLayoutParams(new Toolbar.LayoutParams(50,50));
