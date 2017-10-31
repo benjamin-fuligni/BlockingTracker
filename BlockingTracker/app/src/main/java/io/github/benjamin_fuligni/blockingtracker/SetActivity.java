@@ -25,7 +25,7 @@ import android.widget.TextView;
 import android.view.View.OnDragListener;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import io.github.benjamin_fuligni.blockingtracker.PinView;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.content.Context;
@@ -68,13 +68,17 @@ public class SetActivity extends AppCompatActivity {
         tvD.setOnDragListener(new dropListener());
         */
 
-        SubsamplingScaleImageView imageView = (SubsamplingScaleImageView)findViewById(R.id.imageView);
+        PinView imageView = (PinView)findViewById(R.id.imageView);
         imageView.setImage(ImageSource.resource(R.drawable.balch));
+        imageView.setPin(new PointF(100f, 100f));
 
+        /*
         pv = new PinView(this);
+        pv.setLayoutParams(new Toolbar.LayoutParams(50,50));
         PointF p = new PointF((float)50, (float)50);
         pv.setPin(p);
         pv.setOnTouchListener(new TouchListener());
+        */
     }
 
     private final class TouchListener implements View.OnTouchListener {
@@ -185,7 +189,7 @@ public class SetActivity extends AppCompatActivity {
             Log.d("*** In Set Activity", "in activityResult if statement");
 
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
             cursor.moveToFirst();
@@ -195,62 +199,8 @@ public class SetActivity extends AppCompatActivity {
             cursor.close();
 
             Log.d("*** In Set Activity", picturePath);
-            SubsamplingScaleImageView imageView = (SubsamplingScaleImageView)findViewById(R.id.imageView);
+            PinView imageView = (PinView) findViewById(R.id.imageView);
             imageView.setImage(ImageSource.uri(picturePath));
         }
-
-    public class PinView extends SubsamplingScaleImageView {
-
-        private PointF sPin;
-        private Bitmap pin;
-
-        public PinView(Context context) {
-            this(context, null);
-        }
-
-        public PinView(Context context, AttributeSet attr) {
-            super(context, attr);
-            initialise();
-        }
-
-        public void setPin(PointF sPin) {
-            this.sPin = sPin;
-            initialise();
-            invalidate();
-        }
-
-        public PointF getPin() {
-            return sPin;
-        }
-
-        private void initialise() {
-            float density = getResources().getDisplayMetrics().densityDpi;
-            pin = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
-            float w = (density/420f) * pin.getWidth();
-            float h = (density/420f) * pin.getHeight();
-            pin = Bitmap.createScaledBitmap(pin, (int)w, (int)h, true);
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            super.onDraw(canvas);
-
-            // Don't draw pin before image is ready so it doesn't move around during setup.
-            if (!isReady()) {
-                return;
-            }
-
-            Paint paint = new Paint();
-            paint.setAntiAlias(true);
-
-            if (sPin != null && pin != null) {
-                PointF vPin = sourceToViewCoord(sPin);
-                float vX = vPin.x - (pin.getWidth()/2);
-                float vY = vPin.y - pin.getHeight();
-                canvas.drawBitmap(pin, vX, vY, paint);
-            }
-
-        }
-
     }
 }
