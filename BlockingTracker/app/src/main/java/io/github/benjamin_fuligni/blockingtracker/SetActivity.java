@@ -3,6 +3,7 @@ package io.github.benjamin_fuligni.blockingtracker;
 import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -30,6 +31,11 @@ import android.graphics.*;
 import android.util.AttributeSet;
 import android.content.Context;
 
+import java.util.HashMap;
+
+import android.database.sqlite.*;
+import android.provider.BaseColumns;
+
 public class SetActivity extends AppCompatActivity {
 
     private TextView tvS;
@@ -42,7 +48,21 @@ public class SetActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     private static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
 
-    @Override
+
+    FeedReaderContract.FeedReaderDbHelper mDbHelper = new FeedReaderContract.FeedReaderDbHelper();
+    // Gets the data repository in write mode
+    SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+    // Create a new map of values, where column names are the keys
+    ContentValues values = new ContentValues();
+    values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
+    values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE, subtitle);
+
+    // Insert the new row, returning the primary key value of the new row
+    long newRowId = db.insert(FeedEntry.TABLE_NAME, null, values);
+
+
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_view);
@@ -68,12 +88,26 @@ public class SetActivity extends AppCompatActivity {
         tvD.setOnDragListener(new dropListener());
         */
 
-        PinView imageView = (PinView)findViewById(R.id.imageView);
+        final PinView imageView = (PinView)findViewById(R.id.imageView);
         imageView.setImage(ImageSource.resource(R.drawable.balch));
         //imageView.setPin(new PointF(100f, 100f));
         //imageView.setPin(new PointF(1000f, 1000f));
         imageView.newPin("Ophelia", new PointF(300f, 300f));
         imageView.newPin("Hamlet", new PointF(1300f, 1300f));
+
+        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HashMap hm = imageView.getHm();
+                DB.execSQL("INSERT INTO BLOCKING (1, hm)");
+                Cursor resultSet = DB.rawQuery("Select * from TutorialsPoint",null);
+                resultSet.moveToFirst();
+                String username = resultSet.getString(0);
+                Snackbar.make(view, username, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     private final class TouchListener implements View.OnTouchListener {

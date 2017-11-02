@@ -64,6 +64,10 @@ public class PinView extends SubsamplingScaleImageView {
         return true;
     }
 
+    public HashMap getHm() {
+        return hm;
+    }
+
     public PointF getPinLocation(int id, PointF location) {
         Pin pin = (Pin)hm.get(id);
         if (pin == null) {
@@ -81,8 +85,8 @@ public class PinView extends SubsamplingScaleImageView {
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         int eventaction = event.getAction();
 
-        float X = (float) event.getX();
-        float Y = (float) event.getY();
+        float X = event.getX();
+        float Y = event.getY();
 
         switch (eventaction) {
 
