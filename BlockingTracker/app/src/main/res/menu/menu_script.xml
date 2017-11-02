@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="io.github.benjamin_fuligni.blockingtracker.ScriptActivity">
     <item
+        android:id="@+id/changeScript"
+        android:orderInCategory="100"
+        android:title="Change Script"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/changeFloorplan"
         android:orderInCategory="100"
         android:title="Change Floorplan"

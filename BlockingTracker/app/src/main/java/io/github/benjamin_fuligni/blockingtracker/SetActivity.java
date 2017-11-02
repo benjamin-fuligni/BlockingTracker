@@ -70,8 +70,13 @@ public class SetActivity extends AppCompatActivity {
 
         PinView imageView = (PinView)findViewById(R.id.imageView);
         imageView.setImage(ImageSource.resource(R.drawable.balch));
+<<<<<<< HEAD
         imageView.setPin(new PointF(100f, 100f));
         imageView.setPin(new PointF(1000f, 1000f));
+=======
+        imageView.newPin("Ophelia", new PointF(300f, 300f));
+        imageView.newPin("Hamlet", new PointF(1300f, 1300f));
+>>>>>>> 4503436b9cb8d9b617e766c41e3c04ebb35717ba
     }
 
     private final class TouchListener implements View.OnTouchListener {
@@ -120,7 +125,7 @@ public class SetActivity extends AppCompatActivity {
                 case DragEvent.ACTION_DRAG_ENTERED:
                     break;
                 case DragEvent.ACTION_DRAG_EXITED:
-                    pv.setPin(point);
+                    pv.setPinLocation(0, point);
                     break;
                 case DragEvent.ACTION_DROP:
                     TextView dropTarget = (TextView) v;
@@ -149,7 +154,6 @@ public class SetActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.changeFloorplan:
-                Log.d("*** In Main Activity", "changing floorPlan");
                 if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
                     // Should we show an explanation?
@@ -164,7 +168,6 @@ public class SetActivity extends AppCompatActivity {
                 }
                 Intent i = new Intent(
                         Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                Log.d("*** In Main Activity", "new intent created");
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
                 return true;
             case R.id.action_settings:
@@ -179,7 +182,6 @@ public class SetActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Log.d("*** In Set Activity", "in activityResult if statement");
 
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
