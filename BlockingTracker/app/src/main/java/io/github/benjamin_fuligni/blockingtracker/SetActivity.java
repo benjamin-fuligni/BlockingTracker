@@ -70,13 +70,10 @@ public class SetActivity extends AppCompatActivity {
 
         PinView imageView = (PinView)findViewById(R.id.imageView);
         imageView.setImage(ImageSource.resource(R.drawable.balch));
-<<<<<<< HEAD
-        imageView.setPin(new PointF(100f, 100f));
-        imageView.setPin(new PointF(1000f, 1000f));
-=======
+        //imageView.setPin(new PointF(100f, 100f));
+        //imageView.setPin(new PointF(1000f, 1000f));
         imageView.newPin("Ophelia", new PointF(300f, 300f));
         imageView.newPin("Hamlet", new PointF(1300f, 1300f));
->>>>>>> 4503436b9cb8d9b617e766c41e3c04ebb35717ba
     }
 
     private final class TouchListener implements View.OnTouchListener {
