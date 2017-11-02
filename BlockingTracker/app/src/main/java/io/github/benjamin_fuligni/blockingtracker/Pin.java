@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
@@ -23,9 +25,10 @@ public class Pin extends Object {
     private String label;
     private PointF location;
     private Bitmap icon;
+    private int id;
 
-    public Pin(String label, PointF location, Bitmap icon) {
-        initialise(label, location, icon);
+    public Pin(int id, String label, PointF location, Bitmap icon) {
+        initialise(id, label, location, icon);
     }
 
     public String getLabel() { return label; }
@@ -37,9 +40,13 @@ public class Pin extends Object {
     public Bitmap getIcon() { return icon; }
     public void setIcon(Bitmap icon) { this.icon = icon; }
 
-    private void initialise(String label, PointF location, Bitmap icon) {
+    public int getPinId() { return id; }
+    public void setPinId(int id) { this.id = id; }
+
+    private void initialise(int id, String label, PointF location, Bitmap icon) {
         this.label = label;
         this.location = location;
         this.icon = icon;
+        this.id = id;
     }
 }
