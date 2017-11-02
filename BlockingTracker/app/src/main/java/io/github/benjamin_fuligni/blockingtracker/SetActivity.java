@@ -70,7 +70,8 @@ public class SetActivity extends AppCompatActivity {
 
         PinView imageView = (PinView)findViewById(R.id.imageView);
         imageView.setImage(ImageSource.resource(R.drawable.balch));
-        imageView.setPin(new PointF(100f, 100f));
+        imageView.newPin("Ophelia", new PointF(300f, 300f));
+        imageView.newPin("Hamlet", new PointF(1300f, 1300f));
     }
 
     private final class TouchListener implements View.OnTouchListener {
@@ -119,7 +120,7 @@ public class SetActivity extends AppCompatActivity {
                 case DragEvent.ACTION_DRAG_ENTERED:
                     break;
                 case DragEvent.ACTION_DRAG_EXITED:
-                    pv.setPin(point);
+                    pv.setPinLocation("Ophelia", point);
                     break;
                 case DragEvent.ACTION_DROP:
                     TextView dropTarget = (TextView) v;
