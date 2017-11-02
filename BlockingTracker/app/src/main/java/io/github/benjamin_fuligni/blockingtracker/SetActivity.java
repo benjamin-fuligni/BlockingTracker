@@ -48,21 +48,7 @@ public class SetActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     private static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
 
-
-    FeedReaderContract.FeedReaderDbHelper mDbHelper = new FeedReaderContract.FeedReaderDbHelper();
-    // Gets the data repository in write mode
-    SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-    // Create a new map of values, where column names are the keys
-    ContentValues values = new ContentValues();
-    values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
-    values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE, subtitle);
-
-    // Insert the new row, returning the primary key value of the new row
-    long newRowId = db.insert(FeedEntry.TABLE_NAME, null, values);
-
-
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_view);
@@ -95,6 +81,19 @@ public class SetActivity extends AppCompatActivity {
         imageView.newPin("Ophelia", new PointF(300f, 300f));
         imageView.newPin("Hamlet", new PointF(1300f, 1300f));
 
+        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
+        // Gets the data repository in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, "hello");
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE, "it worked");
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_NAME, null, values);
+
+        /*
         FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,10 +107,11 @@ public class SetActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        */
     }
 
+    /*
     private final class TouchListener implements View.OnTouchListener {
-
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             //clipdata
@@ -170,7 +170,7 @@ public class SetActivity extends AppCompatActivity {
             return true;
         }
     }
-
+    */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
