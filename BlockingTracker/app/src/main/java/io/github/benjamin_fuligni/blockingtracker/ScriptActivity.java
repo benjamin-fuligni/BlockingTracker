@@ -19,6 +19,7 @@ public class ScriptActivity extends AppCompatActivity {
     public static final String TEXT_SELECTED = "io.github.benjamin_fuligni.TEXTSELECTED";
 
     private static int RESULT_LOAD_IMAGE = 1;
+    private int footnoteNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class ScriptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_script);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        footnoteNum = 1;
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -42,8 +44,9 @@ public class ScriptActivity extends AppCompatActivity {
                     end = Math.max(0, Math.max(selEnd, selStart));
                     selection = tv.getText().subSequence(start, end);
                     String newText = new StringBuilder().append(tv.getText().subSequence(0, start))
-                            .append(selection).append("HELLO").append(tv.getText().subSequence(end, tv.getText().length())).toString();
+                            .append(selection).append(" ["+footnoteNum+"] ").append(tv.getText().subSequence(end, tv.getText().length())).toString();
                     tv.setText(newText);
+                    footnoteNum += 1;
                 }
                 Snackbar.make(view, selection, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();

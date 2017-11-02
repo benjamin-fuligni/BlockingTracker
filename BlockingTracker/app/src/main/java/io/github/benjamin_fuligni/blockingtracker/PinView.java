@@ -86,7 +86,6 @@ public class PinView extends SubsamplingScaleImageView {
         while(i.hasNext()) {
             Map.Entry me = (Map.Entry)i.next();
             if (me != null && (String)me.getKey() != null && (Pin)me.getValue() != null) {
-                Log.d("***In PinView", (String)me.getKey());
                 Pin pin = (Pin)me.getValue();
                 PointF vPin = sourceToViewCoord(pin.getLocation());
                 float vX = vPin.x - (pin.getIcon().getWidth()/2);
