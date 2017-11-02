@@ -12,13 +12,16 @@ import io.github.benjamin_fuligni.blockingtracker.R;
 
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Selena on 10/31/2017.
  */
 
 public class PinView extends SubsamplingScaleImageView {
 
-    private PointF sPin;
+    private ArrayList Pins = new ArrayList();
+    //private PointF sPin;
     private Bitmap pin;
 
     public PinView(Context context) {
@@ -31,13 +34,20 @@ public class PinView extends SubsamplingScaleImageView {
     }
 
     public void setPin(PointF sPin) {
-        this.sPin = sPin;
+        //this.sPin = sPin;
+        Pins.add(sPin);
         initialise();
         invalidate();
     }
 
+    /*
     public PointF getPin() {
         return sPin;
+    }
+    */
+
+    public ArrayList getPin() {
+        return Pins;
     }
 
     private void initialise() {
@@ -60,11 +70,15 @@ public class PinView extends SubsamplingScaleImageView {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
 
-        if (sPin != null && pin != null) {
-            PointF vPin = sourceToViewCoord(sPin);
-            float vX = vPin.x - (pin.getWidth()/2);
-            float vY = vPin.y - pin.getHeight();
-            canvas.drawBitmap(pin, vX, vY, paint);
+        //if (sPin != null && pin != null) {
+        if (Pins.size() != 0 && pin != null) {
+            for (int i = 0; i < Pins.size(); i++) {
+                //PointF vPin = sourceToViewCoord(sPin);
+                PointF vPin = sourceToViewCoord((PointF)Pins.get(i));
+                float vX = vPin.x - (pin.getWidth() / 2);
+                float vY = vPin.y - pin.getHeight();
+                canvas.drawBitmap(pin, vX, vY, paint);
+            }
         }
 
     }
