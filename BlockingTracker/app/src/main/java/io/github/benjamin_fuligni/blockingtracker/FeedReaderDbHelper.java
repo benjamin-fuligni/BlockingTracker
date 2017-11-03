@@ -1,8 +1,14 @@
 package io.github.benjamin_fuligni.blockingtracker;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.PointF;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Selena on 11/2/2017.
@@ -37,5 +43,32 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public void addPoint(PointF p) {
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("X", p.x);
+        values.put("Y", p.y);
+        DB.insert(DATABASE_NAME, null, values);
+        DB.close();
+    }
+
+    public List<PointF> getPoints() {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        List<PointF> points = new ArrayList<PointF>();
+        String query = "SELECT * FROM " + DATABASE_NAME;
+        Cursor cursor = DB.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                PointF p = new PointF();
+                p.set(cursor.getFloat(0),cursor.getFloat(1));
+                points.add(p);
+            } while (cursor.moveToNext());
+        }
+        DB.close();
+        cursor.close();
+        return points;
     }
 }

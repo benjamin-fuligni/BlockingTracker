@@ -96,7 +96,8 @@ public class SetActivity extends AppCompatActivity {
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_NAME, null, values);
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        db.close();
+        final SQLiteDatabase dbw = mDbHelper.getReadableDatabase();
 
         FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         fab2.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +147,7 @@ public class SetActivity extends AppCompatActivity {
                 }
                 cursor.close(); */
                 int it = cursor.getCount();
+                cursor.close();
                 String itworked = ((Integer) it).toString();
                 Log.e("something", "cursor");
 
