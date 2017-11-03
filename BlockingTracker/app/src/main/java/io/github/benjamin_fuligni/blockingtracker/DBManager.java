@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class DBManager {
 
@@ -56,4 +57,7 @@ public class DBManager {
         database.delete(FeedReaderContract.FeedEntry.TABLE_NAME, FeedReaderContract.FeedEntry._ID + "=" + _id, null);
     }
 
+    public void deleteAll() {
+        database.delete(FeedReaderContract.FeedEntry.TABLE_NAME, null, null);
+    }
 }

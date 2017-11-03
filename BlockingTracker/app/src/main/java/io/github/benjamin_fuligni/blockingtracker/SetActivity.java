@@ -67,8 +67,9 @@ public class SetActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, selected, Snackbar.LENGTH_LONG)
+                Snackbar.make(view, selected + "   database cleared", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                dbManager.deleteAll();
             }
         });
 
