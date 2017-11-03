@@ -97,55 +97,6 @@ public class SetActivity extends AppCompatActivity {
                 cursor.close();
                 String dbCount = ((Integer) count).toString();
 
-                /*
-                Log.e("something", "click");
-                Log.e("something", "readable");
-
-                // Define a projection that specifies which columns from the database
-                // you will actually use after this query.
-                String[] projection = {
-                        FeedReaderContract.FeedEntry._ID,
-                        FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
-                        FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE
-                };
-
-                Log.e("something", "projection");
-
-                // Filter results WHERE "title" = 'My Title'
-                String selection = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE + " = ?";
-                String[] selectionArgs = { "My Title" };
-                Log.e("something", "selection");
-
-                // How you want the results sorted in the resulting Cursor
-                String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE + " DESC";
-                Log.e("something", "sortorder");
-
-                Cursor cursor = dbw.query(
-                        FeedReaderContract.FeedEntry.TABLE_NAME,  // The table to query
-                        projection,                               // The columns to return
-                        selection,                                // The columns for the WHERE clause
-                        selectionArgs,                            // The values for the WHERE clause
-                        null,                                     // don't group the rows
-                        null,                                     // don't filter by row groups
-                        sortOrder,                                // The sort order
-                        null
-                );
-                Log.e("something", "query");
-
-                /*List itemIds = new ArrayList<>();
-                while(cursor.moveToNext()) {
-                    long itemId = cursor.getLong(
-                            cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
-                    itemIds.add(itemId);
-                }
-                cursor.close(); // END COMMENTING OUT HERE
-                int it = cursor.getCount();
-                cursor.close();
-                String itworked = ((Integer) it).toString();
-                Log.e("something", "cursor");
-
-                //String itworked = itemIds.get(0).toString();
-                */
                 Snackbar.make(view, dbCount, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
