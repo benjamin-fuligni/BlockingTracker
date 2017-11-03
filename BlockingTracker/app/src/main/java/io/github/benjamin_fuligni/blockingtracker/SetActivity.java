@@ -33,6 +33,7 @@ import android.util.AttributeSet;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class SetActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String selected = intent.getStringExtra(ScriptActivity.TEXT_SELECTED);
         final String number = intent.getStringExtra(ScriptActivity.NUMBER_INSERT);
+        int dbTitle = intent.getIntExtra(ScriptActivity.DATABASE_INSERT, 0);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -82,11 +84,73 @@ public class SetActivity extends AppCompatActivity {
 
         final PinView imageView = (PinView)findViewById(R.id.imageView);
         imageView.setImage(ImageSource.resource(R.drawable.balch));
-        imageView.newPin("Ophelia", new PointF(300f, 300f));
-        imageView.newPin("Hamlet", new PointF(1300f, 1300f));
 
-        dbManager = new DBManager(this);
+        dbManager = new DBManager(getApplicationContext());
         dbManager.open();
+
+        if (dbTitle == 0) {
+            imageView.newPin("Ophelia", new PointF(300f, 300f));
+            imageView.newPin("Hamlet", new PointF(1300f, 1300f));
+        } else {
+            Cursor cursor = dbManager.fetch();
+            int index = -1;
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                if (dbTitle == cursor.getInt(1)) {
+                    index = 1;
+                    break;
+                }
+                cursor.move(1);
+            }
+            if (index == -1) {
+                imageView.newPin("Ophelia", new PointF(300f, 300f));
+                imageView.newPin("Hamlet", new PointF(1300f, 1300f));
+            } else {
+                //parse pins from db and insert
+                String data = cursor.getString(2);
+
+                data = data.substring(1, data.length() - 1);
+                Log.e("DATA", data);
+                List<String> dataList = new ArrayList<>(Arrays.asList(data.split(", ")));
+                Log.e("parsed data", dataList.toString());
+                List<String> coordinatesList = new ArrayList<>(Arrays.asList(dataList.toString().split(", ")));
+                Log.e("Coordinates List", coordinatesList.toString());
+                String num = coordinatesList.toString();
+                int count = 0;
+                PointF point = new PointF();
+                int j=0, k=0;
+                for (int i = 0; i < dataList.size(); i++) {
+                    while(true) {
+                        if (Character.isDigit(num.charAt(j)) || num.charAt(j) == '.') {
+                            k = j;
+                            while(k < num.length()) {
+                                if (!(Character.isDigit(num.charAt(k)) || num.charAt(k) == '.'))
+                                    break;
+                                k++;
+                                Log.e("K", ((Integer)k).toString());
+                            }
+                            break;
+                        }
+                        j++;
+                        Log.e("J", ((Integer)j).toString());
+                        if(j >= num.length())
+                            break;
+                    }
+                    String temp = (num.substring(j,k));
+                    j = k;
+                    Log.e("coordinate", temp);
+                    Log.e("num", num.substring(j));
+                    count++;
+                    if (count % 2 == 1) {
+                        point.x = Float.valueOf(temp);
+                    } else {
+                        point.y = Float.valueOf(temp);
+                        Log.e("Point", point.toString());
+                        imageView.newPin(((Integer)i).toString(), point);
+                    }
+                }
+            }
+        }
 
         FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         fab2.setOnClickListener(new View.OnClickListener() {
