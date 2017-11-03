@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -74,6 +75,21 @@ public class PinView extends SubsamplingScaleImageView {
             return null;
         }
         return pin.getLocation();
+    }
+
+    public List<PointF> getPins () {
+        List<PointF> pins = new ArrayList<>();
+        Set set = hm.entrySet();
+        Iterator i = set.iterator();
+
+        while (i.hasNext()) {
+            Map.Entry me = (Map.Entry) i.next();
+            if (me != null && (int) me.getKey() > -1 && (Pin) me.getValue() != null) {
+                Pin pin = (Pin) me.getValue();
+                pins.add(sourceToViewCoord(pin.getLocation()));
+            }
+        }
+        return pins;
     }
 
 

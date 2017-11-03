@@ -61,6 +61,7 @@ public class SetActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String selected = intent.getStringExtra(ScriptActivity.TEXT_SELECTED);
+        final String number = intent.getStringExtra(ScriptActivity.NUMBER_INSERT);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +91,8 @@ public class SetActivity extends AppCompatActivity {
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbManager.insert("this is a title", "this is a subtitle");
+                List<PointF> points = imageView.getPins();
+                dbManager.insert(number, points.toString());
                 Cursor cursor = dbManager.fetch();
                 Log.d("in SetActivity", DatabaseUtils.dumpCursorToString(cursor));
                 int count = cursor.getCount();
