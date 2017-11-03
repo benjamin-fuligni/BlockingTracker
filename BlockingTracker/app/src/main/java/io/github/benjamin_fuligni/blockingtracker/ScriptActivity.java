@@ -31,6 +31,7 @@ import java.util.Scanner;
 public class ScriptActivity extends AppCompatActivity {
     public static final String TEXT_SELECTED = "io.github.benjamin_fuligni.TEXTSELECTED";
     public static final String NUMBER_INSERT = "io.github.benjamin_fuligni.NUMBERINSERT";
+    public static final String DATABASE_INSERT = "io.github.benjamin_fuligni.DATABASEINSERT";
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
@@ -49,9 +50,11 @@ public class ScriptActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int pulledNum = 0;
                 TextView tv = (TextView) findViewById(R.id.script);
-                int start = 0;
-                int end = tv.getText().length();
+                //int start = 0;
+                //int end = tv.getText().length();
+                int start, end;
                 CharSequence selection = "";
                 if (tv.isFocused()) {
                     int selStart = tv.getSelectionStart();
@@ -59,17 +62,24 @@ public class ScriptActivity extends AppCompatActivity {
                     start = Math.max(0, Math.min(selEnd, selStart));
                     end = Math.max(0, Math.max(selEnd, selStart));
                     selection = tv.getText().subSequence(start, end);
-                    String newText = new StringBuilder().append(tv.getText().subSequence(0, start))
-                            .append(selection).append(" ["+footnoteNum+"] ").append(tv.getText().subSequence(end, tv.getText().length())).toString();
-                    tv.setText(newText);
-                    footnoteNum += 1;
+                    if (selection.length() >= 3 && selection.charAt(0) == '[' && selection.charAt(2) == ']') {
+                        pulledNum = (int)selection.charAt(1) - 48;
+
+                    } else {
+
+                        String newText = new StringBuilder().append(tv.getText().subSequence(0, start))
+                                .append(selection).append(" [" + footnoteNum + "] ").append(tv.getText().subSequence(end, tv.getText().length())).toString();
+                        tv.setText(newText);
+                        footnoteNum += 1;
+                    }
                 }
                 Snackbar.make(view, selection, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
                 Intent intent = new Intent(ScriptActivity.this, SetActivity.class);
                 intent.putExtra(TEXT_SELECTED, selection.toString());
-                intent.putExtra(NUMBER_INSERT, ((Integer)footnoteNum).toString());
+                intent.putExtra(NUMBER_INSERT, ((Integer)(footnoteNum - 1)).toString());
+                intent.putExtra(DATABASE_INSERT, pulledNum);
                 startActivity(intent);
             }
         });
