@@ -78,12 +78,8 @@ public class SetActivity extends AppCompatActivity {
 
         final PinView imageView = (PinView)findViewById(R.id.imageView);
         imageView.setImage(ImageSource.resource(R.drawable.balch));
-        //imageView.setPin(new PointF(100f, 100f));
-        //imageView.setPin(new PointF(1000f, 1000f));
         imageView.newPin("Ophelia", new PointF(300f, 300f));
         imageView.newPin("Hamlet", new PointF(1300f, 1300f));
-
-
 
         final FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
         // Gets the data repository in write mode
@@ -104,38 +100,36 @@ public class SetActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.e("something", "click");
-
-
                 Log.e("something", "readable");
 
-// Define a projection that specifies which columns from the database
-// you will actually use after this query.
+                // Define a projection that specifies which columns from the database
+                // you will actually use after this query.
                 String[] projection = {
                         FeedReaderContract.FeedEntry._ID,
                         FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
                         FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE
                 };
+
                 Log.e("something", "projection");
 
-// Filter results WHERE "title" = 'My Title'
+                // Filter results WHERE "title" = 'My Title'
                 String selection = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE + " = ?";
                 String[] selectionArgs = { "My Title" };
                 Log.e("something", "selection");
 
-// How you want the results sorted in the resulting Cursor
-                String sortOrder =
-                        FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE + " DESC";
+                // How you want the results sorted in the resulting Cursor
+                String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE + " DESC";
                 Log.e("something", "sortorder");
 
                 Cursor cursor = dbw.query(
-                        FeedReaderContract.FeedEntry.TABLE_NAME,                     // The table to query
+                        FeedReaderContract.FeedEntry.TABLE_NAME,  // The table to query
                         projection,                               // The columns to return
                         selection,                                // The columns for the WHERE clause
                         selectionArgs,                            // The values for the WHERE clause
-                        null,
                         null,                                     // don't group the rows
                         null,                                     // don't filter by row groups
-                        sortOrder                                 // The sort order
+                        sortOrder,                                // The sort order
+                        null
                 );
                 Log.e("something", "query");
 
@@ -152,7 +146,6 @@ public class SetActivity extends AppCompatActivity {
                 Log.e("something", "cursor");
 
                 //String itworked = itemIds.get(0).toString();
-
 
                 Snackbar.make(view, itworked, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
