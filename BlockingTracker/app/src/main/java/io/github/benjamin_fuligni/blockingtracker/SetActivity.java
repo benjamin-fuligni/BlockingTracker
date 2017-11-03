@@ -87,15 +87,16 @@ public class SetActivity extends AppCompatActivity {
 
         final FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
         // Gets the data repository in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, "hello");
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE, "it worked");
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, "title");
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE, "subtitle");
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_NAME, null, values);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         fab2.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +104,7 @@ public class SetActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.e("something", "click");
 
-                SQLiteDatabase dbw = mDbHelper.getReadableDatabase();
+
                 Log.e("something", "readable");
 
 // Define a projection that specifies which columns from the database
@@ -117,7 +118,7 @@ public class SetActivity extends AppCompatActivity {
 
 // Filter results WHERE "title" = 'My Title'
                 String selection = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE + " = ?";
-                String[] selectionArgs = { "hello" };
+                String[] selectionArgs = { "My Title" };
                 Log.e("something", "selection");
 
 // How you want the results sorted in the resulting Cursor
@@ -130,22 +131,25 @@ public class SetActivity extends AppCompatActivity {
                         projection,                               // The columns to return
                         selection,                                // The columns for the WHERE clause
                         selectionArgs,                            // The values for the WHERE clause
+                        null,
                         null,                                     // don't group the rows
                         null,                                     // don't filter by row groups
                         sortOrder                                 // The sort order
                 );
                 Log.e("something", "query");
 
-                List itemIds = new ArrayList<>();
+                /*List itemIds = new ArrayList<>();
                 while(cursor.moveToNext()) {
                     long itemId = cursor.getLong(
                             cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
                     itemIds.add(itemId);
                 }
-                cursor.close();
+                cursor.close(); */
+                int it = cursor.getCount();
+                String itworked = ((Integer) it).toString();
                 Log.e("something", "cursor");
 
-                String itworked = itemIds.get(0).toString();
+                //String itworked = itemIds.get(0).toString();
 
 
                 Snackbar.make(view, itworked, Snackbar.LENGTH_LONG).setAction("Action", null).show();
