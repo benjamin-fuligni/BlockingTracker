@@ -22,6 +22,7 @@ import java.util.Set;
  */
 
 public class Pin extends Object {
+
     private String label;
     private PointF location;
     private Bitmap icon;

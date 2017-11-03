@@ -16,9 +16,7 @@ public class DBManager {
     private Context context;
     private SQLiteDatabase database;
 
-    public DBManager(Context c) {
-        context = c;
-    }
+    public DBManager(Context c) { context = c; }
 
     public DBManager open() throws SQLException {
         dbHelper = new FeedReaderDbHelper(context);

@@ -92,7 +92,6 @@ public class PinView extends SubsamplingScaleImageView {
         return pins;
     }
 
-
     private void initialise() {
         hm = new HashMap();
     }
