@@ -30,6 +30,7 @@ import java.util.Scanner;
 
 public class ScriptActivity extends AppCompatActivity {
     public static final String TEXT_SELECTED = "io.github.benjamin_fuligni.TEXTSELECTED";
+    public static final String NUMBER_INSERT = "io.github.benjamin_fuligni.NUMBERINSERT";
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
@@ -68,6 +69,7 @@ public class ScriptActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(ScriptActivity.this, SetActivity.class);
                 intent.putExtra(TEXT_SELECTED, selection.toString());
+                intent.putExtra(NUMBER_INSERT, ((Integer)footnoteNum).toString());
                 startActivity(intent);
             }
         });
