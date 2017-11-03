@@ -46,6 +46,7 @@ public class SetActivity extends AppCompatActivity {
     private float yPos;
     private PointF point;
     private PinView pv;
+    private DBManager dbManager;
 
     private static int RESULT_LOAD_IMAGE = 1;
     private static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
@@ -81,6 +82,9 @@ public class SetActivity extends AppCompatActivity {
         imageView.newPin("Ophelia", new PointF(300f, 300f));
         imageView.newPin("Hamlet", new PointF(1300f, 1300f));
 
+        dbManager = new DBManager(this);
+        dbManager.open();
+        /*
         final FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getBaseContext());
         // Gets the data repository in write mode
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -94,11 +98,19 @@ public class SetActivity extends AppCompatActivity {
         long newRowId = db.insert(FeedReaderContract.FeedEntry.TABLE_NAME, null, values);
         db.close();
         final SQLiteDatabase dbw = mDbHelper.getReadableDatabase();
+        */
 
         FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dbManager.insert("this is a title", "this is a subtitle");
+                Cursor cursor = dbManager.fetch();
+                int count = cursor.getCount();
+                cursor.close();
+                String dbCount = ((Integer) count).toString();
+
+                /*
                 Log.e("something", "click");
                 Log.e("something", "readable");
 
@@ -139,15 +151,15 @@ public class SetActivity extends AppCompatActivity {
                             cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
                     itemIds.add(itemId);
                 }
-                cursor.close(); */
+                cursor.close(); // END COMMENTING OUT HERE
                 int it = cursor.getCount();
                 cursor.close();
                 String itworked = ((Integer) it).toString();
                 Log.e("something", "cursor");
 
                 //String itworked = itemIds.get(0).toString();
-
-                Snackbar.make(view, itworked, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                */
+                Snackbar.make(view, dbCount, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 
