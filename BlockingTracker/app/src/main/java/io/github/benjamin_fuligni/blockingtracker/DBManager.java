@@ -30,10 +30,25 @@ public class DBManager {
     }
 
     public void insert(String title, String subtitle) {
-        ContentValues contentValue = new ContentValues();
-        contentValue.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
-        contentValue.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE, subtitle);
-        database.insert(FeedReaderContract.FeedEntry.TABLE_NAME, null, contentValue);
+        Cursor cursor = this.fetch();
+        int index = -1;
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            if (title.equals(((Integer)cursor.getInt(1)).toString())) {
+                index = 1;
+                break;
+            }
+            cursor.move(1);
+        }
+
+        if (index == -1) {
+            ContentValues contentValue = new ContentValues();
+            contentValue.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
+            contentValue.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE, subtitle);
+            database.insert(FeedReaderContract.FeedEntry.TABLE_NAME, null, contentValue);
+        } else {
+            this.update(title, subtitle);
+        }
     }
 
     public Cursor fetch() {
@@ -45,16 +60,16 @@ public class DBManager {
         return cursor;
     }
 
-    public int update(long _id, String name, String desc) {
+    public int update(String name, String desc) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, name);
         contentValues.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE, desc);
-        int i = database.update(FeedReaderContract.FeedEntry.TABLE_NAME, contentValues, FeedReaderContract.FeedEntry._ID + " = " + _id, null);
+        int i = database.update(FeedReaderContract.FeedEntry.TABLE_NAME, contentValues, FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE + " = " + name, null);
         return i;
     }
 
     public void delete(long _id) {
-        database.delete(FeedReaderContract.FeedEntry.TABLE_NAME, FeedReaderContract.FeedEntry._ID + "=" + _id, null);
+        database.delete(FeedReaderContract.FeedEntry.TABLE_NAME, FeedReaderContract.FeedEntry._ID + " = " + _id, null);
     }
 
     public void deleteAll() {
