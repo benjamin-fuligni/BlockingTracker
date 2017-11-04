@@ -53,6 +53,7 @@ public class PinView extends SubsamplingScaleImageView {
         icon = Bitmap.createScaledBitmap(icon, (int) w, (int) h, true);
         Pin pin = new Pin(hm.size(), label, location, icon);
         hm.put(pin.getPinId(), pin);
+        invalidate();
     }
 
     public boolean setPinLocation(int id, PointF location) {
@@ -71,9 +72,7 @@ public class PinView extends SubsamplingScaleImageView {
 
     public PointF getPinLocation(int id, PointF location) {
         Pin pin = (Pin)hm.get(id);
-        if (pin == null) {
-            return null;
-        }
+        if (pin == null) { return null; }
         return pin.getLocation();
     }
 
@@ -85,8 +84,8 @@ public class PinView extends SubsamplingScaleImageView {
         while (i.hasNext()) {
             Map.Entry me = (Map.Entry) i.next();
             if (me != null && (int) me.getKey() > -1 && (Pin) me.getValue() != null) {
-                Pin pin = (Pin) me.getValue();
-                pins.add(sourceToViewCoord(pin.getLocation()));
+                Pin pin = (Pin)me.getValue();
+                pins.add(pin.getLocation());
             }
         }
         return pins;
@@ -114,7 +113,6 @@ public class PinView extends SubsamplingScaleImageView {
                     pinId = -1;
                     currentPin = null;
                 } else {
-
                     Set set = hm.entrySet();
                     Iterator i = set.iterator();
 
@@ -141,7 +139,7 @@ public class PinView extends SubsamplingScaleImageView {
 
             case MotionEvent.ACTION_MOVE:   // touch drag with the pin
                 // move the pin the same as the finger
-
+                break;
             case MotionEvent.ACTION_UP:
                 // touch drop - just do things here after dropping
                 break;
@@ -156,28 +154,23 @@ public class PinView extends SubsamplingScaleImageView {
         super.onDraw(canvas);
 
         // Don't draw pin before image is ready so it doesn't move around during setup.
-        if (!isReady()) {
-            return;
-        }
+        if (!isReady()) { return; }
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-
-
 
         Set set = hm.entrySet();
         Iterator i = set.iterator();
 
         while (i.hasNext()) {
-            Map.Entry me = (Map.Entry) i.next();
-            if (me != null && (int) me.getKey() > -1 && (Pin) me.getValue() != null) {
-                Pin pin = (Pin) me.getValue();
+            Map.Entry me = (Map.Entry)i.next();
+            if (me != null && (int) me.getKey() > -1 && (Pin)me.getValue() != null) {
+                Pin pin = (Pin)me.getValue();
                 PointF vPin = sourceToViewCoord(pin.getLocation());
                 float vX = vPin.x - (pin.getIcon().getWidth() / 2);
                 float vY = vPin.y - pin.getIcon().getHeight();
                 canvas.drawBitmap(pin.getIcon(), vX, vY, paint);
-
-                    }
-                }
             }
         }
+    }
+}

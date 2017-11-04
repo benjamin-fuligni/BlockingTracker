@@ -1,9 +1,6 @@
 package io.github.benjamin_fuligni.blockingtracker;
 
 import android.Manifest;
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -16,29 +13,23 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.view.View.DragShadowBuilder;
 import android.widget.TextView;
-import android.view.View.OnDragListener;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.PinView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import android.graphics.*;
-import android.util.AttributeSet;
-import android.content.Context;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.List;
-
-import android.database.sqlite.*;
-import android.provider.BaseColumns;
 
 public class SetActivity extends AppCompatActivity {
 
@@ -52,6 +43,7 @@ public class SetActivity extends AppCompatActivity {
 
     private static int RESULT_LOAD_IMAGE = 1;
     private static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
+    private static final int REQUEST_TEXT_GET = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,25 +57,16 @@ public class SetActivity extends AppCompatActivity {
         final String number = intent.getStringExtra(ScriptActivity.NUMBER_INSERT);
         int dbTitle = intent.getIntExtra(ScriptActivity.DATABASE_INSERT, 0);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, selected + "   database cleared", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                dbManager.deleteAll();
-            }
-        });
-
-        /*
-        tvS = (TextView)  findViewById(R.id.textView2);
-        tvS.setOnTouchListener(new TouchListener());
-        tvD = (TextView) findViewById(R.id.textView3);
-        tvD.setOnDragListener(new dropListener());
-        */
-
         final PinView imageView = (PinView)findViewById(R.id.imageView);
         imageView.setImage(ImageSource.resource(R.drawable.balch));
+
+        FloatingActionButton addPin = (FloatingActionButton) findViewById(R.id.addPin);
+        addPin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageView.newPin("Ophelia", new PointF(100f, 100f));
+            }
+        });
 
         dbManager = new DBManager(getApplicationContext());
         dbManager.open();
@@ -106,132 +89,32 @@ public class SetActivity extends AppCompatActivity {
                 imageView.newPin("Ophelia", new PointF(300f, 300f));
                 imageView.newPin("Hamlet", new PointF(1300f, 1300f));
             } else {
-                //parse pins from db and insert
                 String data = cursor.getString(2);
-
-                data = data.substring(1, data.length() - 1);
-                Log.e("DATA", data);
-                List<String> dataList = new ArrayList<>(Arrays.asList(data.split(", ")));
-                Log.e("parsed data", dataList.toString());
-                List<String> coordinatesList = new ArrayList<>(Arrays.asList(dataList.toString().split(", ")));
-                Log.e("Coordinates List", coordinatesList.toString());
-                String num = coordinatesList.toString();
-                int count = 0;
-                PointF point = new PointF();
-                int j=0, k=0;
-                for (int i = 0; i < dataList.size(); i++) {
-                    while(true) {
-                        if (Character.isDigit(num.charAt(j)) || num.charAt(j) == '.') {
-                            k = j;
-                            while(k < num.length()) {
-                                if (!(Character.isDigit(num.charAt(k)) || num.charAt(k) == '.'))
-                                    break;
-                                k++;
-                                Log.e("K", ((Integer)k).toString());
-                            }
-                            break;
-                        }
-                        j++;
-                        Log.e("J", ((Integer)j).toString());
-                        if(j >= num.length())
-                            break;
-                    }
-                    String temp = (num.substring(j,k));
-                    j = k;
-                    Log.e("coordinate", temp);
-                    Log.e("num", num.substring(j));
-                    count++;
-                    if (count % 2 == 1) {
-                        point.x = Float.valueOf(temp);
-                    } else {
-                        point.y = Float.valueOf(temp);
-                        Log.e("Point", point.toString());
-                        imageView.newPin(((Integer)i).toString(), point);
-                    }
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<PointF>>(){}.getType();
+                List<PointF> points = gson.fromJson(data, listType);
+                for (int p = 0; p < points.size(); p++) {
+                    imageView.newPin("Ophelia", points.get(p));
                 }
             }
         }
 
-        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
-        fab2.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton saveButton = (FloatingActionButton) findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Gson gson = new Gson();
                 List<PointF> points = imageView.getPins();
-                dbManager.insert(number, points.toString());
+                dbManager.insert(number, gson.toJson(points));
                 Cursor cursor = dbManager.fetch();
-                Log.d("in SetActivity", DatabaseUtils.dumpCursorToString(cursor));
-                int count = cursor.getCount();
                 cursor.close();
-                String dbCount = ((Integer) count).toString();
-
+                String dbCount = ((Integer)cursor.getCount()).toString();
                 Snackbar.make(view, dbCount, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 
     }
 
-    /*
-    private final class TouchListener implements View.OnTouchListener {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            //clipdata
-            CharSequence x = "X";
-            ClipData.Item item =  new ClipData.Item(x);
-            java.lang.String stuff[] = {"text/plain"};
-            ClipDescription cd = new ClipDescription(x, stuff);
-            ClipData data = new ClipData(cd, item);
-
-            //ACTION_DOWN refers to the beginning of a touch
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0); //startDrag is deprecated
-                return true;
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                xPos = motionEvent.getX();
-                yPos = motionEvent.getY();
-                Log.v("x", String.valueOf(xPos));
-                Log.v("y", String.valueOf(yPos));
-                point = new PointF(xPos, yPos);
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-
-    private class dropListener implements View.OnDragListener {
-        //used for modularity - specific to type of drag but not specific drag
-        View draggedView;
-        TextView dropped;
-
-        //need to define onDrag method
-        @Override
-        public boolean onDrag(View v, DragEvent event) {
-            switch (event.getAction()) {
-                case DragEvent.ACTION_DRAG_STARTED:
-                    draggedView = (View) event.getLocalState();
-                    dropped = (TextView) draggedView;
-                    //draggedView.setVisibility(View.INVISIBLE);
-                    break;
-                case DragEvent.ACTION_DRAG_ENTERED:
-                    break;
-                case DragEvent.ACTION_DRAG_EXITED:
-                    pv.setPinLocation(0, point);
-                    break;
-                case DragEvent.ACTION_DROP:
-                    TextView dropTarget = (TextView) v;
-                    dropTarget.setText(dropped.getText().toString());
-                    break;
-                case DragEvent.ACTION_DRAG_ENDED:
-                    break;
-                default:
-                    break;
-            }
-            return true;
-        }
-    }
-    */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -245,6 +128,23 @@ public class SetActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
+            case R.id.changeScript:
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    // Should we show an explanation?
+                    if (shouldShowRequestPermissionRationale(
+                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        // Explain to the user why we need to read the contacts
+                    }
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+                    // app-defined int constant that should be quite unique
+                }
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.setType("text/plain");
+                startActivityForResult(intent, REQUEST_TEXT_GET);
+                return true;
             case R.id.changeFloorplan:
                 if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -271,6 +171,7 @@ public class SetActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
@@ -285,9 +186,39 @@ public class SetActivity extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            Log.d("*** In Set Activity", picturePath);
             PinView imageView = (PinView) findViewById(R.id.imageView);
             imageView.setImage(ImageSource.uri(picturePath));
+        } else if (requestCode == REQUEST_TEXT_GET && resultCode == RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            String fileContent = readTextFile(uri);
+            TextView script = (TextView) findViewById(R.id.script);
+            script.setText(fileContent);
         }
+    }
+
+    private String readTextFile(Uri uri){
+
+        BufferedReader reader = null;
+        StringBuilder builder = new StringBuilder();
+        try {
+            reader = new BufferedReader(new InputStreamReader(getContentResolver().openInputStream(uri)));
+            String line = "";
+
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null){
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return builder.toString();
     }
 }

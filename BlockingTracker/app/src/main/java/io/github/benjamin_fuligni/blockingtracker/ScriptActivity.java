@@ -21,14 +21,11 @@ import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.PinView;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 public class ScriptActivity extends AppCompatActivity {
+
     public static final String TEXT_SELECTED = "io.github.benjamin_fuligni.TEXTSELECTED";
     public static final String NUMBER_INSERT = "io.github.benjamin_fuligni.NUMBERINSERT";
     public static final String DATABASE_INSERT = "io.github.benjamin_fuligni.DATABASEINSERT";
@@ -46,7 +43,7 @@ public class ScriptActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         footnoteNum = 1;
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addPin);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,9 +61,7 @@ public class ScriptActivity extends AppCompatActivity {
                     selection = tv.getText().subSequence(start, end);
                     if (selection.length() >= 3 && selection.charAt(0) == '[' && selection.charAt(2) == ']') {
                         pulledNum = (int)selection.charAt(1) - 48;
-
                     } else {
-
                         String newText = new StringBuilder().append(tv.getText().subSequence(0, start))
                                 .append(selection).append(" [" + footnoteNum + "] ").append(tv.getText().subSequence(end, tv.getText().length())).toString();
                         tv.setText(newText);
@@ -156,7 +151,6 @@ public class ScriptActivity extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            Log.d("*** In Set Activity", picturePath);
             PinView imageView = (PinView) findViewById(R.id.imageView);
             imageView.setImage(ImageSource.uri(picturePath));
         } else if (requestCode == REQUEST_TEXT_GET && resultCode == RESULT_OK && data != null) {
