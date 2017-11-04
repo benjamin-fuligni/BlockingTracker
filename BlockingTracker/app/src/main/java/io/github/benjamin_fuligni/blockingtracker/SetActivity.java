@@ -117,8 +117,10 @@ public class SetActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_script, menu);
+        menu.findItem(R.id.changeScript).setVisible(false);
         return true;
     }
 

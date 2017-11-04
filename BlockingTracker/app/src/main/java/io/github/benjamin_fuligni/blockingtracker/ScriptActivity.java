@@ -84,6 +84,7 @@ public class ScriptActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_script, menu);
+        menu.findItem(R.id.changeFloorplan).setVisible(false);
         return true;
     }
 
