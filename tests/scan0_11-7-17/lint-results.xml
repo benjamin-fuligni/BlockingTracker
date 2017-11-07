@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="4" by="lint 2.3.3">
+
+    <issue
+        id="ScrollViewSize"
+        severity="Warning"
+        message="This TextView should use `android:layout_height=&quot;wrap_content&quot;`"
+        category="Correctness"
+        priority="7"
+        summary="ScrollView size validation"
+        explanation="ScrollView children must set their `layout_width` or `layout_height` attributes to `wrap_content` rather than `fill_parent` or `match_parent` in the scrolling dimension"
+        errorLine1="                android:layout_height=&quot;match_parent&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\layout\content_script.xml"
+            line="36"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="OldTargetApi"
+        severity="Warning"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details."
+        category="Correctness"
+        priority="6"
+        summary="Target SDK attribute is not targeting latest version"
+        explanation="When your application runs on a version of Android that is more recent than your `targetSdkVersion` specifies that it has been tested with, various compatibility modes kick in. This ensures that your application continues to work, but it may look out of place. For example, if the `targetSdkVersion` is less than 14, your app may get an option button in the UI.&#xA;&#xA;To fix this issue, set the `targetSdkVersion` to the highest available value. Then test your app to make sure everything works correctly. You may want to consult the compatibility notes to see what changes apply to each version you are adding support for: http://developer.android.com/reference/android/os/Build.VERSION_CODES.html"
+        url="http://developer.android.com/reference/android/os/Build.VERSION_CODES.html"
+        urls="http://developer.android.com/reference/android/os/Build.VERSION_CODES.html"
+        errorLine1="        targetSdkVersion 24"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\build.gradle"
+            line="9"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        severity="Warning"
+        message="A newer version of com.android.support:appcompat-v7 than 24.2.1 is available: 25.3.1"
+        category="Correctness"
+        priority="4"
+        summary="Obsolete Gradle Dependency"
+        explanation="This detector looks for usages of libraries where the version you are using is not the current stable release. Using older versions is fine, and there are cases where you deliberately want to stick with an older version. However, you may simply not be aware that a more recent version is available, and that is what this lint check helps find."
+        errorLine1="    compile &apos;com.android.support:appcompat-v7:24.2.1&apos;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\build.gradle"
+            line="27"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        severity="Warning"
+        message="A newer version of com.android.support:design than 24.2.1 is available: 25.3.1"
+        category="Correctness"
+        priority="4"
+        summary="Obsolete Gradle Dependency"
+        explanation="This detector looks for usages of libraries where the version you are using is not the current stable release. Using older versions is fine, and there are cases where you deliberately want to stick with an older version. However, you may simply not be aware that a more recent version is available, and that is what this lint check helps find."
+        errorLine1="    compile &apos;com.android.support:design:24.2.1&apos;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\build.gradle"
+            line="29"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        severity="Warning"
+        message="A newer version of com.android.support:support-v4 than 24.2.1 is available: 25.3.1"
+        category="Correctness"
+        priority="4"
+        summary="Obsolete Gradle Dependency"
+        explanation="This detector looks for usages of libraries where the version you are using is not the current stable release. Using older versions is fine, and there are cases where you deliberately want to stick with an older version. However, you may simply not be aware that a more recent version is available, and that is what this lint check helps find."
+        errorLine1="    compile &apos;com.android.support:support-v4:24.2.1&apos;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\build.gradle"
+            line="30"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="AllowBackup"
+        severity="Warning"
+        message="On SDK version 23 and up, your app data will be automatically backed up and restored on app install. Consider adding the attribute `android:fullBackupContent` to specify an `@xml` resource which configures which files to backup. More info: https://developer.android.com/training/backup/autosyncapi.html"
+        category="Security"
+        priority="3"
+        summary="AllowBackup/FullBackupContent Problems"
+        explanation="The `allowBackup` attribute determines if an application&apos;s data can be backed up and restored. It is documented at http://developer.android.com/reference/android/R.attr.html#allowBackup&#xA;&#xA;By default, this flag is set to `true`. When this flag is set to `true`, application data can be backed up and restored by the user using `adb backup` and `adb restore`.&#xA;&#xA;This may have security consequences for an application. `adb backup` allows users who have enabled USB debugging to copy application data off of the device. Once backed up, all application data can be read by the user. `adb restore` allows creation of application data from a source specified by the user. Following a restore, applications should not assume that the data, file permissions, and directory permissions were created by the application itself.&#xA;&#xA;Setting `allowBackup=&quot;false&quot;` opts an application out of both backup and restore.&#xA;&#xA;To fix this warning, decide whether your application should support backup, and explicitly set `android:allowBackup=(true|false)&quot;`.&#xA;&#xA;If not set to false, and if targeting API 23 or later, lint will also warn that you should set `android:fullBackupContent` to configure auto backup."
+        url="https://developer.android.com/training/backup/autosyncapi.html"
+        urls="https://developer.android.com/training/backup/autosyncapi.html,http://developer.android.com/reference/android/R.attr.html#allowBackup"
+        errorLine1="    &lt;application"
+        errorLine2="    ^"
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\AndroidManifest.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="DrawAllocation"
+        severity="Warning"
+        message="Avoid object allocations during draw/layout operations (preallocate and reuse instead)"
+        category="Performance"
+        priority="9"
+        summary="Memory allocations within drawing code"
+        explanation="You should avoid allocating objects during a drawing or layout operation. These are called frequently, so a smooth UI can be interrupted by garbage collection pauses caused by the object allocations.&#xA;&#xA;The way this is generally handled is to allocate the needed objects up front and to reuse them for each drawing operation.&#xA;&#xA;Some methods allocate memory on your behalf (such as `Bitmap.create`), and these should be handled in the same way."
+        errorLine1="        Paint paint = new Paint();"
+        errorLine2="                      ~~~~~~~~~~~">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\java\com\davemorrissey\labs\subscaleview\PinView.java"
+            line="159"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="ObsoleteLayoutParam"
+        severity="Warning"
+        message="Invalid layout param in a `ScrollView`: `layout_weight`"
+        category="Performance"
+        priority="6"
+        summary="Obsolete layout params"
+        explanation="The given layout_param is not defined for the given layout, meaning it has no effect. This usually happens when you change the parent layout or move view code around without updating the layout params. This will cause useless attribute processing at runtime, and is misleading for others reading the layout so the parameter should be removed."
+        errorLine1="                android:layout_weight=&quot;1.0&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\layout\content_script.xml"
+            line="37"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.drawable.floorplan` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds."
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\drawable-hdpi\floorplan.png"/>
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\drawable-mdpi\floorplan.png"/>
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\drawable-xhdpi\floorplan.png"/>
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\drawable-xxhdpi\floorplan.png"/>
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\drawable-xxxhdpi\floorplan.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.dummy_button` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds."
+        errorLine1="    &lt;string name=&quot;dummy_button&quot;>Dummy Button&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\values\strings.xml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        severity="Warning"
+        message="The resource `R.string.dummy_content` appears to be unused"
+        category="Performance"
+        priority="3"
+        summary="Unused resources"
+        explanation="Unused resources make applications larger and slow down builds."
+        errorLine1="    &lt;string name=&quot;dummy_content&quot;>DUMMY\nCONTENT&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\values\strings.xml"
+            line="7"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UselessParent"
+        severity="Warning"
+        message="This `ScrollView` layout or its `LinearLayout` parent is useless"
+        category="Performance"
+        priority="2"
+        summary="Useless parent layout"
+        explanation="A layout with children that has no siblings, is not a scrollview or a root layout, and does not have a background, can be removed and have its children moved directly into the parent for a flatter and more efficient layout hierarchy."
+        errorLine1="        &lt;ScrollView"
+        errorLine2="        ^">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\layout\content_script.xml"
+            line="25"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="GoogleAppIndexingWarning"
+        severity="Warning"
+        message="App is not indexable by Google Search; consider adding at least one Activity with an ACTION-VIEW intent filter. See issue explanation for more details."
+        category="Usability"
+        priority="5"
+        summary="Missing support for Firebase App Indexing"
+        explanation="Adds URLs to get your app into the Google index, to get installs and traffic to your app from Google Search."
+        url="https://g.co/AppIndexing/AndroidStudio"
+        urls="https://g.co/AppIndexing/AndroidStudio"
+        errorLine1="    &lt;application"
+        errorLine2="    ^"
+        quickfix="studio">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\AndroidManifest.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        severity="Warning"
+        message="Custom view `com/davemorrissey/labs/subscaleview/PinView` overrides `onTouchEvent` but not `performClick`"
+        category="Accessibility"
+        priority="6"
+        summary="Accessibility in Custom Views"
+        explanation="If a `View` that overrides `onTouchEvent` or uses an `OnTouchListener` does not also implement `performClick` and call it when clicks are detected, the `View` may not handle accessibility actions properly. Logic handling the click actions should ideally be placed in `View#performClick` as some accessibility services invoke `performClick` when a click action should occur."
+        errorLine1="    public boolean onTouchEvent(@NonNull MotionEvent event) {"
+        errorLine2="                   ~~~~~~~~~~~~">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\java\com\davemorrissey\labs\subscaleview\PinView.java"
+            line="99"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;ACT I\n \n SCENE I. Elsinore. A platform before the castle.\n \n \tFRANCISCO at his post. Enter to him BERNARDO\n \n BERNARDO\n \tWho&apos;s there?\n FRANCISCO\n \tNay, answer me: stand, and unfold yourself.\n BERNARDO\n \tLong live the king!\n FRANCISCO\n \tBernardo?\n BERNARDO\n \tHe.\n FRANCISCO\n \tYou come most carefully upon your hour.\n BERNARDO\n \t&apos;Tis now struck twelve; get thee to bed, Francisco.\n FRANCISCO\n \tFor this relief much thanks: &apos;tis bitter cold,\n \tAnd I am sick at heart.\n BERNARDO\n \tHave you had quiet guard?\n FRANCISCO\n \tNot a mouse stirring.\n BERNARDO\n \tWell, good night.\n \tIf you do meet Horatio and Marcellus,\n \tThe rivals of my watch, bid them make haste.\n FRANCISCO\n \tI think I hear them. Stand, ho! Who&apos;s there?\n \n \tEnter HORATIO and MARCELLUS\n \n HORATIO\n \tFriends to this ground.\n MARCELLUS\n \tAnd liegemen to the Dane.\n FRANCISCO\n \tGive you good night.\n MARCELLUS\n \tO, farewell, honest soldier:\n \tWho hath relieved you?\n FRANCISCO\n \tBernardo has my place.\n \tGive you good night.\n \n \tExit\n \n MARCELLUS\n \tHolla! Bernardo!\n BERNARDO\n \tSay,\n \tWhat, is Horatio there?\n HORATIO\n \tA piece of him.\n BERNARDO\n \tWelcome, Horatio: welcome, good Marcellus.\n MARCELLUS\n \tWhat, has this thing appear&apos;d again to-night?\n BERNARDO\n \tI have seen nothing.\n MARCELLUS\n \tHoratio says &apos;tis but our fantasy,\n \tAnd will not let belief take hold of him\n \tTouching this dreaded sight, twice seen of us:\n \tTherefore I have entreated him along\n \tWith us to watch the minutes of this night;\n \tThat if again this apparition come,\n \tHe may approve our eyes and speak to it.\n HORATIO\n \tTush, tush, &apos;twill not appear.\n BERNARDO\n \tSit down awhile;\n \tAnd let us once again assail your ears,\n \tThat are so fortified against our story\n \tWhat we have two nights seen.\n HORATIO\n \tWell, sit we down,\n \tAnd let us hear Bernardo speak of this.\n BERNARDO\n \tLast night of all,\n \tWhen yond same star that&apos;s westward from the pole\n \tHad made his course to illume that part of heaven\n \tWhere now it burns, Marcellus and myself,\n \tThe bell then beating one,--\n \n \tEnter Ghost\n \n MARCELLUS\n \tPeace, break thee off; look, where it comes again!\n BERNARDO\n \tIn the same figure, like the king that&apos;s dead.\n MARCELLUS\n \tThou art a scholar; speak to it, Horatio.\n BERNARDO\n \tLooks it not like the king? mark it, Horatio.\n HORATIO\n \tMost like: it harrows me with fear and wonder.\n BERNARDO\n \tIt would be spoke to.\n MARCELLUS\n \tQuestion it, Horatio.\n HORATIO\n \tWhat art thou that usurp&apos;st this time of night,\n \tTogether with that fair and warlike form\n \tIn which the majesty of buried Denmark\n \tDid sometimes march? by heaven I charge thee, speak!\n MARCELLUS\n \tIt is offended.\n BERNARDO\n \tSee, it stalks away!\n HORATIO\n \tStay! speak, speak! I charge thee, speak!\n \n \tExit Ghost\n \n MARCELLUS\n \t&apos;Tis gone, and will not answer.\n BERNARDO\n \tHow now, Horatio! you tremble and look pale:\n \tIs not this something more than fantasy?\n \tWhat think you on&apos;t?\n HORATIO\n \tBefore my God, I might not this believe\n \tWithout the sensible and true avouch\n \tOf mine own eyes.\n MARCELLUS\n \tIs it not like the king?\n HORATIO\n \tAs thou art to thyself:\n \tSuch was the very armour he had on\n \tWhen he the ambitious Norway combated;\n \tSo frown&apos;d he once, when, in an angry parle,\n \tHe smote the sledded Polacks on the ice.\n \t&apos;Tis strange.\n MARCELLUS\n \tThus twice before, and jump at this dead hour,\n \tWith martial stalk hath he gone by our watch.\n HORATIO\n \tIn what particular thought to work I know not;\n \tBut in the gross and scope of my opinion,\n \tThis bodes some strange eruption to our state.\n MARCELLUS\n \tGood now, sit down, and tell me, he that knows,\n \tWhy this same strict and most observant watch\n \tSo nightly toils the subject of the land,\n \tAnd why such daily cast of brazen cannon,\n \tAnd foreign mart for implements of war;\n \tWhy such impress of shipwrights, whose sore task\n \tDoes not divide the Sunday from the week;\n \tWhat might be toward, that this sweaty haste\n \tDoth make the night joint-labourer with the day:\n \tWho is&apos;t that can inform me?\n HORATIO\n \tThat can I;\n \tAt least, the whisper goes so. Our last king,\n \tWhose image even but now appear&apos;d to us,\n \tWas, as you know, by Fortinbras of Norway,\n \tThereto prick&apos;d on by a most emulate pride,\n \tDared to the combat; in which our valiant Hamlet--\n \tFor so this side of our known world esteem&apos;d him--\n \tDid slay this Fortinbras; who by a seal&apos;d compact,\n \tWell ratified by law and heraldry,\n \tDid forfeit, with his life, all those his lands\n \tWhich he stood seized of, to the conqueror:\n \tAgainst the which, a moiety competent\n \tWas gaged by our king; which had return&apos;d\n \tTo the inheritance of Fortinbras,\n \tHad he been vanquisher; as, by the same covenant,\n \tAnd carriage of the article design&apos;d,\n \tHis fell to Hamlet. Now, sir, young Fortinbras,\n \tOf unimproved mettle hot and full,\n \tHath in the skirts of Norway here and there\n \tShark&apos;d up a list of lawless resolutes,\n \tFor food and diet, to some enterprise\n \tThat hath a stomach in&apos;t; which is no other--\n \tAs it doth well appear unto our state--\n \tBut to recover of us, by strong hand\n \tAnd terms compulsatory, those foresaid lands\n \tSo by his father lost: and this, I take it,\n \tIs the main motive of our preparations,\n \tThe source of this our watch and the chief head\n \tOf this post-haste and romage in the land.\n BERNARDO\n \tI think it be no other but e&apos;en so:\n \tWell may it sort that this portentous figure\n \tComes armed through our watch; so like the king\n \tThat was and is the question of these wars.\n HORATIO\n \tA mote it is to trouble the mind&apos;s eye.\n \tIn the most high and palmy state of Rome,\n \tA little ere the mightiest Julius fell,\n \tThe graves stood tenantless and the sheeted dead\n \tDid squeak and gibber in the Roman streets:\n \tAs stars with trains of fire and dews of blood,\n \tDisasters in the sun; and the moist star\n \tUpon whose influence Neptune&apos;s empire stands\n \tWas sick almost to doomsday with eclipse:\n \tAnd even the like precurse of fierce events,\n \tAs harbingers preceding still the fates\n \tAnd prologue to the omen coming on,\n \tHave heaven and earth together demonstrated\n \tUnto our climatures and countrymen.--\n \tBut soft, behold! lo, where it comes again!\n \n \tRe-enter Ghost\n \n \tI&apos;ll cross it, though it blast me. Stay, illusion!\n \tIf thou hast any sound, or use of voice,\n \tSpeak to me:\n \tIf there be any good thing to be done,\n \tThat may to thee do ease and grace to me,\n \tSpeak to me:\n \n \tCock crows\n \n \tIf thou art privy to thy country&apos;s fate,\n \tWhich, happily, foreknowing may avoid, O, speak!\n \tOr if thou hast uphoarded in thy life\n \tExtorted treasure in the womb of earth,\n \tFor which, they say, you spirits oft walk in death,\n \tSpeak of it: stay, and speak! Stop it, Marcellus.\n MARCELLUS\n \tShall I strike at it with my partisan?\n HORATIO\n \tDo, if it will not stand.\n BERNARDO\n \t&apos;Tis here!\n HORATIO\n \t&apos;Tis here!\n MARCELLUS\n \t&apos;Tis gone!\n \n \tExit Ghost\n \n \tWe do it wrong, being so majestical,\n \tTo offer it the show of violence;\n \tFor it is, as the air, invulnerable,\n \tAnd our vain blows malicious mockery.\n BERNARDO\n \tIt was about to speak, when the cock crew.\n HORATIO\n \tAnd then it started like a guilty thing\n \tUpon a fearful summons. I have heard,\n \tThe cock, that is the trumpet to the morn,\n \tDoth with his lofty and shrill-sounding throat\n \tAwake the god of day; and, at his warning,\n \tWhether in sea or fire, in earth or air,\n \tThe extravagant and erring spirit hies\n \tTo his confine: and of the truth herein\n \tThis present object made probation.\n MARCELLUS\n \tIt faded on the crowing of the cock.\n \tSome say that ever &apos;gainst that season comes\n \tWherein our Saviour&apos;s birth is celebrated,\n \tThe bird of dawning singeth all night long:\n \tAnd then, they say, no spirit dares stir abroad;\n \tThe nights are wholesome; then no planets strike,\n \tNo fairy takes, nor witch hath power to charm,\n \tSo hallow&apos;d and so gracious is the time.\n HORATIO\n \tSo have I heard and do in part believe it.\n \tBut, look, the morn, in russet mantle clad,\n \tWalks o&apos;er the dew of yon high eastward hill:\n \tBreak we our watch up; and by my advice,\n \tLet us impart what we have seen to-night\n \tUnto young Hamlet; for, upon my life,\n \tThis spirit, dumb to us, will speak to him.\n \tDo you consent we shall acquaint him with it,\n \tAs needful in our loves, fitting our duty?\n MARCELLUS\n \tLet&apos;s do&apos;t, I pray; and I this morning know\n \tWhere we shall find him most conveniently.\n \n \tExeunt\n&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="            &lt;TextView"
+        errorLine2="            ^">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\layout\content_script.xml"
+            line="33"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;Change Script&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:title=&quot;Change Script&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\menu\menu_script.xml"
+            line="8"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;Change Floorplan&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:&#xA;&#xA;* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)&#xA;&#xA;* The application cannot be translated to other languages by just adding new translations for existing string resources.&#xA;&#xA;There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="        android:title=&quot;Change Floorplan&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\menu\menu_script.xml"
+            line="13"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Use &quot;`start`&quot; instead of &quot;`left`&quot; to ensure correct behavior in right-to-left locales"
+        category="Internationalization:Bidirectional Text"
+        priority="5"
+        summary="Using left/right instead of start/end attributes"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.&#xA;&#xA;For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.&#xA;&#xA;(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="        android:layout_gravity=&quot;top|left&quot;"
+        errorLine2="                                ~~~~~~~~">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\layout\activity_set_view.xml"
+            line="31"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Use &quot;`start`&quot; instead of &quot;`left`&quot; to ensure correct behavior in right-to-left locales"
+        category="Internationalization:Bidirectional Text"
+        priority="5"
+        summary="Using left/right instead of start/end attributes"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.&#xA;&#xA;For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.&#xA;&#xA;(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="        android:layout_gravity=&quot;top|left&quot;"
+        errorLine2="                                ~~~~~~~~">
+        <location
+            file="C:\Users\Selena\AndroidStudioProjects\BlockingTracker\BlockingTracker\app\src\main\res\layout\activity_set_view.xml"
+            line="41"
+            column="33"/>
+    </issue>
+
+</issues>
