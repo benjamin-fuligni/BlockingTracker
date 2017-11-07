@@ -40,7 +40,7 @@ public class DBManager {
             }
             cursor.move(1);
         }
-
+        cursor.close();
         if (index == -1) {
             ContentValues contentValue = new ContentValues();
             contentValue.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
@@ -60,11 +60,32 @@ public class DBManager {
         return cursor;
     }
 
+    public String get(String title) {
+        Cursor cursor = this.fetch();
+        int index = -1;
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            Log.e("dbmanager get", cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
+            Log.e("dbmanager get", cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE)));
+            Log.e("dbmanager get title", title);
+            if (title.equals(cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)))) {
+                Log.e("dbmanager get", "in if");
+                String text = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE));
+                Log.e("dbmanager get", text);
+                cursor.close();
+                return text;
+            }
+            cursor.move(1);
+        }
+        cursor.close();
+        return null;
+    }
+
     public int update(String name, String desc) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, name);
         contentValues.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE, desc);
-        int i = database.update(FeedReaderContract.FeedEntry.TABLE_NAME, contentValues, FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE + " = " + name, null);
+        int i = database.update(FeedReaderContract.FeedEntry.TABLE_NAME, contentValues, FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE + " = '" + name + "'", null);
         return i;
     }
 

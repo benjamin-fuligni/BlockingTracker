@@ -37,6 +37,7 @@ public class ScriptActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_TEXT_GET = 3;
     private int footnoteNum;
+    private DBManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,19 @@ public class ScriptActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         footnoteNum = 1;
+
+        dbManager = new DBManager(getApplicationContext());
+        dbManager.open();
+
+        TextView tv = (TextView)findViewById(R.id.script);
+        String scriptText = dbManager.get("script");
+        if (scriptText == null) {
+            Log.e("script activity", "scripttext == null");
+            dbManager.insert("script", "Please select a script");
+            scriptText = dbManager.get("script");
+        }
+        Log.d("scriptText", scriptText);
+        tv.setText(scriptText);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addPin);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +83,7 @@ public class ScriptActivity extends AppCompatActivity {
                         String newText = new StringBuilder().append(tv.getText().subSequence(0, start))
                                 .append(selection).append(" [" + footnoteNum + "] ").append(tv.getText().subSequence(end, tv.getText().length())).toString();
                         tv.setText(newText);
+                        dbManager.update("script", newText);
                         footnoteNum += 1;
                     }
                 }
@@ -163,6 +178,7 @@ public class ScriptActivity extends AppCompatActivity {
             String fileContent = readTextFile(uri);
             TextView script = (TextView) findViewById(R.id.script);
             script.setText(fileContent);
+            dbManager.update("script", fileContent);
         }
     }
 

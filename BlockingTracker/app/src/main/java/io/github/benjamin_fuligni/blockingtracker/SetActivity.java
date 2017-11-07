@@ -97,6 +97,7 @@ public class SetActivity extends AppCompatActivity {
                     imageView.newPin("Ophelia", points.get(p));
                 }
             }
+            cursor.close();
         }
 
         FloatingActionButton saveButton = (FloatingActionButton) findViewById(R.id.saveButton);
