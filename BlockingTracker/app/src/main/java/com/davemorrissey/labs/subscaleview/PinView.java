@@ -35,6 +35,7 @@ public class PinView extends SubsamplingScaleImageView {
     private HashMap hm;
     private int pinId = -1;
     private Pin currentPin = null;
+    private Paint paint;
 
     public PinView(Context context) {
         this(context, null);
@@ -93,6 +94,8 @@ public class PinView extends SubsamplingScaleImageView {
 
     private void initialise() {
         hm = new HashMap();
+        paint = new Paint();
+        paint.setAntiAlias(true);
     }
 
     @Override
@@ -155,9 +158,6 @@ public class PinView extends SubsamplingScaleImageView {
 
         // Don't draw pin before image is ready so it doesn't move around during setup.
         if (!isReady()) { return; }
-
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
 
         Set set = hm.entrySet();
         Iterator i = set.iterator();

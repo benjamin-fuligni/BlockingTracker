@@ -5,12 +5,12 @@
     <item
         android:id="@+id/changeScript"
         android:orderInCategory="100"
-        android:title="Change Script"
+        android:title="@string/change_Script"
         app:showAsAction="never" />
     <item
         android:id="@+id/changeFloorplan"
         android:orderInCategory="100"
-        android:title="Change Floorplan"
+        android:title="@string/change_Floorplan"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
