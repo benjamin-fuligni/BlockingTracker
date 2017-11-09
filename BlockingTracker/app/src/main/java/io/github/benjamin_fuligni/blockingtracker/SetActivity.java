@@ -28,6 +28,7 @@ import android.graphics.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringBufferInputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class SetActivity extends AppCompatActivity {
     private PointF point;
     private PinView pv;
     private DBManager dbManager;
+    private String currentRecord;
 
     private static int RESULT_LOAD_IMAGE = 1;
     private static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
@@ -57,8 +59,16 @@ public class SetActivity extends AppCompatActivity {
         final String number = intent.getStringExtra(ScriptActivity.NUMBER_INSERT);
         int dbTitle = intent.getIntExtra(ScriptActivity.DATABASE_INSERT, 0);
 
+        dbManager = new DBManager(getApplicationContext());
+        dbManager.open();
+
         final PinView imageView = (PinView)findViewById(R.id.imageView);
-        imageView.setImage(ImageSource.resource(R.drawable.balch));
+        String picturePath = dbManager.get("set");
+        if (picturePath == null) {
+            imageView.setImage(ImageSource.resource(R.drawable.balch));
+        } else {
+            imageView.setImage(ImageSource.uri(picturePath));
+        }
 
         FloatingActionButton addPin = (FloatingActionButton) findViewById(R.id.addPin);
         addPin.setOnClickListener(new View.OnClickListener() {
@@ -68,19 +78,15 @@ public class SetActivity extends AppCompatActivity {
             }
         });
 
-        dbManager = new DBManager(getApplicationContext());
-        dbManager.open();
-
-        if (dbTitle == 0) {
-            imageView.newPin("Ophelia", new PointF(300f, 300f));
-            imageView.newPin("Hamlet", new PointF(1300f, 1300f));
-        } else {
+        currentRecord = number;
+        if (dbTitle != 0) {
             Cursor cursor = dbManager.fetch();
             int index = -1;
             cursor.moveToFirst();
             while (!cursor.isAfterLast()){
                 if (dbTitle == cursor.getInt(1)) {
                     index = 1;
+                    currentRecord = String.valueOf(dbTitle);
                     break;
                 }
                 cursor.move(1);
@@ -106,11 +112,10 @@ public class SetActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Gson gson = new Gson();
                 List<PointF> points = imageView.getPins();
-                dbManager.insert(number, gson.toJson(points));
+                dbManager.insert(currentRecord, gson.toJson(points));
                 Cursor cursor = dbManager.fetch();
                 cursor.close();
-                String dbCount = ((Integer)cursor.getCount()).toString();
-                Snackbar.make(view, dbCount, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                finish();
             }
         });
 
@@ -191,11 +196,7 @@ public class SetActivity extends AppCompatActivity {
 
             PinView imageView = (PinView) findViewById(R.id.imageView);
             imageView.setImage(ImageSource.uri(picturePath));
-        } else if (requestCode == REQUEST_TEXT_GET && resultCode == RESULT_OK && data != null) {
-            Uri uri = data.getData();
-            String fileContent = readTextFile(uri);
-            TextView script = (TextView) findViewById(R.id.script);
-            script.setText(fileContent);
+            dbManager.insert("set", picturePath);
         }
     }
 

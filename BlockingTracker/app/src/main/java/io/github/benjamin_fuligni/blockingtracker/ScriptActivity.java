@@ -36,7 +36,7 @@ public class ScriptActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_TEXT_GET = 3;
-    private int footnoteNum;
+    private String footnoteNum;
     private DBManager dbManager;
 
     @Override
@@ -46,7 +46,6 @@ public class ScriptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_script);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        footnoteNum = 1;
 
         dbManager = new DBManager(getApplicationContext());
         dbManager.open();
@@ -58,6 +57,12 @@ public class ScriptActivity extends AppCompatActivity {
             scriptText = dbManager.get("script");
         }
         tv.setText(scriptText);
+
+        footnoteNum = dbManager.get("footnoteNum");
+        if (footnoteNum == null) {
+            dbManager.insert("footnoteNum", "0");
+            footnoteNum = dbManager.get("footnoteNum");
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addPin);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -76,19 +81,18 @@ public class ScriptActivity extends AppCompatActivity {
                     if (selection.length() >= 3 && selection.charAt(0) == '[' && selection.charAt(2) == ']') {
                         pulledNum = (int)selection.charAt(1) - 48;
                     } else {
+                        footnoteNum = ((Integer)(Integer.parseInt(footnoteNum)+1)).toString();
                         String newText = new StringBuilder().append(tv.getText().subSequence(0, start))
                                 .append(selection).append(" [" + footnoteNum + "] ").append(tv.getText().subSequence(end, tv.getText().length())).toString();
                         tv.setText(newText);
                         dbManager.update("script", newText);
-                        footnoteNum += 1;
+                        dbManager.update("footnoteNum", footnoteNum);
                     }
                 }
-                Snackbar.make(view, selection, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
 
                 Intent intent = new Intent(ScriptActivity.this, SetActivity.class);
                 intent.putExtra(TEXT_SELECTED, selection.toString());
-                intent.putExtra(NUMBER_INSERT, ((Integer)(footnoteNum - 1)).toString());
+                intent.putExtra(NUMBER_INSERT, footnoteNum);
                 intent.putExtra(DATABASE_INSERT, pulledNum);
                 startActivity(intent);
             }
@@ -175,6 +179,8 @@ public class ScriptActivity extends AppCompatActivity {
             TextView script = (TextView) findViewById(R.id.script);
             script.setText(fileContent);
             dbManager.update("script", fileContent);
+            dbManager.update("footnoteNum", "0");
+            footnoteNum = "0";
         }
     }
 
