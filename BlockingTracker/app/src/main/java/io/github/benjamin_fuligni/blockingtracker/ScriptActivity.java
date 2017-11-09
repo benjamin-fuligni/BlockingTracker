@@ -54,11 +54,9 @@ public class ScriptActivity extends AppCompatActivity {
         TextView tv = (TextView)findViewById(R.id.script);
         String scriptText = dbManager.get("script");
         if (scriptText == null) {
-            Log.e("script activity", "scripttext == null");
             dbManager.insert("script", "Please select a script");
             scriptText = dbManager.get("script");
         }
-        Log.d("scriptText", scriptText);
         tv.setText(scriptText);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addPin);
@@ -67,8 +65,6 @@ public class ScriptActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int pulledNum = 0;
                 TextView tv = (TextView) findViewById(R.id.script);
-                //int start = 0;
-                //int end = tv.getText().length();
                 int start, end;
                 CharSequence selection = "";
                 if (tv.isFocused()) {

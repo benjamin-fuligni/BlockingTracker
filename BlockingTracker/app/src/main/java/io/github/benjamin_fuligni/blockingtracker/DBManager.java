@@ -65,13 +65,8 @@ public class DBManager {
         int index = -1;
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
-            Log.e("dbmanager get", cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
-            Log.e("dbmanager get", cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE)));
-            Log.e("dbmanager get title", title);
             if (title.equals(cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)))) {
-                Log.e("dbmanager get", "in if");
                 String text = cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE));
-                Log.e("dbmanager get", text);
                 cursor.close();
                 return text;
             }
