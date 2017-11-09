@@ -130,23 +130,6 @@ public class ScriptActivity extends AppCompatActivity {
                 intent.setType("text/plain");
                 startActivityForResult(intent, REQUEST_TEXT_GET);
                 return true;
-            case R.id.changeFloorplan:
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    // Should we show an explanation?
-                    if (shouldShowRequestPermissionRationale(
-                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        // Explain to the user why we need to read the contacts
-                    }
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                    // app-defined int constant that should be quite unique
-                }
-                Intent i = new Intent(
-                        Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-                return true;
             case R.id.action_settings:
                 return true;
             default:
@@ -159,21 +142,7 @@ public class ScriptActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            PinView imageView = (PinView) findViewById(R.id.imageView);
-            imageView.setImage(ImageSource.uri(picturePath));
-        } else if (requestCode == REQUEST_TEXT_GET && resultCode == RESULT_OK && data != null) {
+        if (requestCode == REQUEST_TEXT_GET && resultCode == RESULT_OK && data != null) {
             Uri uri = data.getData();
             String fileContent = readTextFile(uri);
             TextView script = (TextView) findViewById(R.id.script);

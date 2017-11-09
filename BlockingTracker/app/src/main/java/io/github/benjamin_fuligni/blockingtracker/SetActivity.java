@@ -34,12 +34,7 @@ import java.util.List;
 
 public class SetActivity extends AppCompatActivity {
 
-    private TextView tvS;
-    private TextView tvD;
-    private float xPos;
-    private float yPos;
-    private PointF point;
-    private PinView pv;
+    private PinView imageView;
     private DBManager dbManager;
     private String currentRecord;
 
@@ -62,7 +57,7 @@ public class SetActivity extends AppCompatActivity {
         dbManager = new DBManager(getApplicationContext());
         dbManager.open();
 
-        final PinView imageView = (PinView)findViewById(R.id.imageView);
+        imageView = (PinView) findViewById(R.id.imageView);
         String picturePath = dbManager.get("set");
         if (picturePath == null) {
             imageView.setImage(ImageSource.resource(R.drawable.balch));
@@ -83,7 +78,7 @@ public class SetActivity extends AppCompatActivity {
             Cursor cursor = dbManager.fetch();
             int index = -1;
             cursor.moveToFirst();
-            while (!cursor.isAfterLast()){
+            while (!cursor.isAfterLast()) {
                 if (dbTitle == cursor.getInt(1)) {
                     index = 1;
                     currentRecord = String.valueOf(dbTitle);
@@ -97,7 +92,8 @@ public class SetActivity extends AppCompatActivity {
             } else {
                 String data = cursor.getString(2);
                 Gson gson = new Gson();
-                Type listType = new TypeToken<List<PointF>>(){}.getType();
+                Type listType = new TypeToken<List<PointF>>() {
+                }.getType();
                 List<PointF> points = gson.fromJson(data, listType);
                 for (int p = 0; p < points.size(); p++) {
                     imageView.newPin("Ophelia", points.get(p));
@@ -136,23 +132,6 @@ public class SetActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.changeScript:
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    // Should we show an explanation?
-                    if (shouldShowRequestPermissionRationale(
-                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        // Explain to the user why we need to read the contacts
-                    }
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                    // app-defined int constant that should be quite unique
-                }
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.setType("text/plain");
-                startActivityForResult(intent, REQUEST_TEXT_GET);
-                return true;
             case R.id.changeFloorplan:
                 if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -198,31 +177,5 @@ public class SetActivity extends AppCompatActivity {
             imageView.setImage(ImageSource.uri(picturePath));
             dbManager.insert("set", picturePath);
         }
-    }
-
-    private String readTextFile(Uri uri){
-
-        BufferedReader reader = null;
-        StringBuilder builder = new StringBuilder();
-        try {
-            reader = new BufferedReader(new InputStreamReader(getContentResolver().openInputStream(uri)));
-            String line = "";
-
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null){
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return builder.toString();
     }
 }
