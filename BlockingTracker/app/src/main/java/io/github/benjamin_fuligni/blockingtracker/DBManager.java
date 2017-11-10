@@ -29,7 +29,7 @@ public class DBManager {
         dbHelper.close();
     }
 
-    public void insert(String title, String subtitle) {
+    public int insert(String title, String subtitle) {
         Cursor cursor = this.fetch();
         int index = -1;
         cursor.moveToFirst();
@@ -49,6 +49,7 @@ public class DBManager {
         } else {
             this.update(title, subtitle);
         }
+        return index;
     }
 
     public Cursor fetch() {
