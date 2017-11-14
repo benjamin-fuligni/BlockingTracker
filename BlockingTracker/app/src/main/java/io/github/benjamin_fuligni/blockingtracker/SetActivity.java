@@ -69,6 +69,7 @@ public class SetActivity extends AppCompatActivity {
         addPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 imageView.newPin("Ophelia", new PointF(100f, 100f));
             }
         });
