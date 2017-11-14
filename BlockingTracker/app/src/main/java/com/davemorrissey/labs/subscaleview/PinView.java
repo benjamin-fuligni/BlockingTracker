@@ -95,6 +95,7 @@ public class PinView extends SubsamplingScaleImageView {
     private void initialise() {
         hm = new HashMap();
         paint = new Paint();
+        paint.setTextSize(30);
         paint.setAntiAlias(true);
     }
 
