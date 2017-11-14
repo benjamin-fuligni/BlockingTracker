@@ -46,17 +46,25 @@ public class PinView extends SubsamplingScaleImageView {
         initialise();
     }
 
+    private void initialise() {
+        hm = new HashMap();
+        paint = new Paint();
+        paint.setTextSize(30);
+        paint.setAntiAlias(true);
+    }
+
     public void newPin(String label, PointF location) {
         float density = getResources().getDisplayMetrics().densityDpi;
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.drawable.black_dot);
-        float w = (density / 6000f) * icon.getWidth();
-        float h = (density / 6000f) * icon.getHeight();
+        float w = (density / 10000f) * icon.getWidth();
+        float h = (density / 10000f) * icon.getHeight();
         icon = Bitmap.createScaledBitmap(icon, (int) w, (int) h, true);
         Pin pin = new Pin(hm.size(), label, location, icon);
         hm.put(pin.getPinId(), pin);
         invalidate();
     }
 
+    /*
     public boolean setPinLocation(int id, PointF location) {
         Pin pin = (Pin)hm.get(id);
         if (pin == null) {
@@ -76,6 +84,7 @@ public class PinView extends SubsamplingScaleImageView {
         if (pin == null) { return null; }
         return pin.getLocation();
     }
+    */
 
     public List<PointF> getPins () {
         List<PointF> pins = new ArrayList<>();
@@ -92,12 +101,6 @@ public class PinView extends SubsamplingScaleImageView {
         return pins;
     }
 
-    private void initialise() {
-        hm = new HashMap();
-        paint = new Paint();
-        paint.setTextSize(30);
-        paint.setAntiAlias(true);
-    }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
@@ -140,13 +143,6 @@ public class PinView extends SubsamplingScaleImageView {
                     }
                 }
                 break;
-
-            case MotionEvent.ACTION_MOVE:   // touch drag with the pin
-                // move the pin the same as the finger
-                break;
-            case MotionEvent.ACTION_UP:
-                // touch drop - just do things here after dropping
-                break;
         }
         // redraw the canvas
         invalidate();
@@ -171,7 +167,7 @@ public class PinView extends SubsamplingScaleImageView {
                 float vX = vPin.x - (pin.getIcon().getWidth() / 2);
                 float vY = vPin.y - pin.getIcon().getHeight();
                 canvas.drawBitmap(pin.getIcon(), vX, vY, paint);
-                canvas.drawText(pin.getLabel(), vX, (vY - 10), paint);
+                canvas.drawText(pin.getLabel(), vX, (vY - pin.getIcon().getHeight()/2), paint);
             }
         }
     }

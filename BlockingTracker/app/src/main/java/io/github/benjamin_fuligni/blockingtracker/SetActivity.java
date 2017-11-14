@@ -59,7 +59,8 @@ public class SetActivity extends AppCompatActivity {
 
         imageView = (PinView) findViewById(R.id.imageView);
         String picturePath = dbManager.get("set");
-        if (picturePath == null) {
+        if (picturePath == null || picturePath == "") {
+            dbManager.insert("set", "");
             imageView.setImage(ImageSource.resource(R.drawable.balch));
         } else {
             imageView.setImage(ImageSource.uri(picturePath));
@@ -176,7 +177,7 @@ public class SetActivity extends AppCompatActivity {
 
             PinView imageView = (PinView) findViewById(R.id.imageView);
             imageView.setImage(ImageSource.uri(picturePath));
-            dbManager.insert("set", picturePath);
+            dbManager.update("set", picturePath);
         }
     }
 }
