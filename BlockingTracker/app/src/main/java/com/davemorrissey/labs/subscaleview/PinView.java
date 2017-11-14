@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -32,10 +34,12 @@ import java.util.Set;
 
 public class PinView extends SubsamplingScaleImageView {
 
+    private Context context;
     private HashMap hm;
     private int pinId = -1;
     private Pin currentPin = null;
     private Paint paint;
+    private Paint selectedPaint;
 
     public PinView(Context context) {
         this(context, null);
@@ -43,6 +47,7 @@ public class PinView extends SubsamplingScaleImageView {
 
     public PinView(Context context, AttributeSet attr) {
         super(context, attr);
+        this.context = context;
         initialise();
     }
 
@@ -51,6 +56,8 @@ public class PinView extends SubsamplingScaleImageView {
         paint = new Paint();
         paint.setTextSize(30);
         paint.setAntiAlias(true);
+        selectedPaint = new Paint(paint);
+        selectedPaint.setColor(ContextCompat.getColor(context, R.color.colorAccent));
     }
 
     public void newPin(String label, PointF location) {
@@ -101,6 +108,16 @@ public class PinView extends SubsamplingScaleImageView {
         return pins;
     }
 
+    public boolean deleteCurrentPin() {
+        if (pinId > -1 && currentPin != null) {
+            hm.remove(currentPin.getPinId());
+            pinId = -1;
+            currentPin = null;
+            invalidate();
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
@@ -112,11 +129,13 @@ public class PinView extends SubsamplingScaleImageView {
         switch (eventaction) {
 
             case MotionEvent.ACTION_DOWN: // touch down so check if the finger is on a pin
+                // pin is currently selected
                 if (pinId > -1 && currentPin != null) {
                     Y = Y + currentPin.getIcon().getHeight() / 2;
                     PointF sPin = viewToSourceCoord(new PointF(X, Y));
                     currentPin.setLocation(sPin);
                     hm.put(pinId, currentPin);
+                    currentPin.setSelected(false);
                     pinId = -1;
                     currentPin = null;
                 } else {
@@ -136,7 +155,7 @@ public class PinView extends SubsamplingScaleImageView {
                             if (X > pinXmin && X < pinXmax && Y > pinYmin && Y < pinYmax) {
                                 pinId = pin.getPinId();
                                 currentPin = pin;
-                                hm.remove(pin.getPinId());
+                                pin.setSelected(true);
                                 break;
                             }
                         }
@@ -165,9 +184,13 @@ public class PinView extends SubsamplingScaleImageView {
                 Pin pin = (Pin)me.getValue();
                 PointF vPin = sourceToViewCoord(pin.getLocation());
                 float vX = vPin.x - (pin.getIcon().getWidth() / 2);
-                float vY = vPin.y - pin.getIcon().getHeight();
-                canvas.drawBitmap(pin.getIcon(), vX, vY, paint);
-                canvas.drawText(pin.getLabel(), vX, (vY - pin.getIcon().getHeight()/2), paint);
+                float vY = vPin.y - (pin.getIcon().getHeight() / 2);
+                if (pin.isSelected()) {
+                    canvas.drawCircle(vPin.x, vY, pin.getIcon().getWidth()/2, selectedPaint);
+                } else {
+                    canvas.drawCircle(vPin.x, vY, pin.getIcon().getWidth()/2, paint);
+                }
+                canvas.drawText(pin.getLabel(), vX, (vY - pin.getIcon().getHeight()), paint);
             }
         }
     }

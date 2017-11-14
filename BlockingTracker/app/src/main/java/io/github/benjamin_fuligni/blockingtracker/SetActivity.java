@@ -117,6 +117,13 @@ public class SetActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Boolean result = imageView.deleteCurrentPin();
+            }
+        });
     }
 
     @Override

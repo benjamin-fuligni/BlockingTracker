@@ -28,6 +28,7 @@ public class Pin extends Object {
     private String label;
     private PointF location;
     private Bitmap icon;
+    private Boolean selected;
     private int id;
 
     public Pin(int id, String label, PointF location, Bitmap icon) {
@@ -46,10 +47,14 @@ public class Pin extends Object {
     public int getPinId() { return id; }
     public void setPinId(int id) { this.id = id; }
 
+    public Boolean isSelected() { return selected; }
+    public void setSelected(Boolean isSelected) { this.selected = isSelected; }
+
     private void initialise(int id, String label, PointF location, Bitmap icon) {
         this.label = label;
         this.location = location;
         this.icon = icon;
+        this.selected = false;
         this.id = id;
     }
 }
