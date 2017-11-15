@@ -54,7 +54,7 @@ public class ScriptActivity extends AppCompatActivity {
         TextView tv = (TextView)findViewById(R.id.script);
         String scriptText = dbManager.get("script");
         if (scriptText == null) {
-            dbManager.insert("script", "Please select a script");
+            dbManager.insert("script", "Please select a script.");
             scriptText = dbManager.get("script");
         }
         tv.setText(scriptText);

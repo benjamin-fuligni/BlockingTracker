@@ -4,19 +4,16 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.PinView;
@@ -25,10 +22,6 @@ import com.google.gson.reflect.TypeToken;
 
 import android.graphics.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringBufferInputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -59,9 +52,11 @@ public class SetActivity extends AppCompatActivity {
 
         imageView = (PinView) findViewById(R.id.imageView);
         String picturePath = dbManager.get("set");
-        if (picturePath == null || picturePath == "") {
-            dbManager.insert("set", "");
-            imageView.setImage(ImageSource.resource(R.drawable.balch));
+        if (picturePath == null) {
+            dbManager.insert("set", "no image chosen");
+            imageView.setImage(ImageSource.resource(R.drawable.arena_floorplan));
+        } else if (picturePath.equals("no image chosen")) {
+            imageView.setImage(ImageSource.resource(R.drawable.arena_floorplan));
         } else {
             imageView.setImage(ImageSource.uri(picturePath));
         }
@@ -70,7 +65,6 @@ public class SetActivity extends AppCompatActivity {
         addPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 imageView.newPin("Ophelia", new PointF(100f, 100f));
             }
         });
