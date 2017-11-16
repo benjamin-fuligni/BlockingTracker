@@ -93,16 +93,16 @@ public class PinView extends SubsamplingScaleImageView {
     }
     */
 
-    public List<PointF> getPins () {
-        List<PointF> pins = new ArrayList<>();
+    public List<Pin> getPins () {
+        List<Pin> pins = new ArrayList<>();
         Set set = hm.entrySet();
         Iterator i = set.iterator();
 
         while (i.hasNext()) {
             Map.Entry me = (Map.Entry) i.next();
-            if (me != null && (int) me.getKey() > -1 && (Pin) me.getValue() != null) {
+            if (me != null && (int) me.getKey() > -1 && me.getValue() != null) {
                 Pin pin = (Pin)me.getValue();
-                pins.add(pin.getLocation());
+                pins.add(pin);
             }
         }
         return pins;

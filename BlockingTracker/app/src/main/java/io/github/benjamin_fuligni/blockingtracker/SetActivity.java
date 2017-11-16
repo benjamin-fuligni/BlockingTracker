@@ -93,17 +93,14 @@ public class SetActivity extends AppCompatActivity {
                 }
                 cursor.move(1);
             }
-            if (index == -1) {
-                imageView.newPin("Ophelia", new PointF(300f, 300f));
-                imageView.newPin("Hamlet", new PointF(1300f, 1300f));
-            } else {
+            if (index != -1) {
                 String data = cursor.getString(2);
                 Gson gson = new Gson();
-                Type listType = new TypeToken<List<PointF>>() {
+                Type listType = new TypeToken<List<Pin>>() {
                 }.getType();
-                List<PointF> points = gson.fromJson(data, listType);
+                List<Pin> points = gson.fromJson(data, listType);
                 for (int p = 0; p < points.size(); p++) {
-                    imageView.newPin("Ophelia", points.get(p));
+                    imageView.newPin(points.get(p).getLabel(), points.get(p).getLocation());
                 }
             }
             cursor.close();
@@ -114,7 +111,7 @@ public class SetActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Gson gson = new Gson();
-                List<PointF> points = imageView.getPins();
+                List<Pin> points = imageView.getPins();
                 dbManager.insert(currentRecord, gson.toJson(points));
                 Cursor cursor = dbManager.fetch();
                 cursor.close();
