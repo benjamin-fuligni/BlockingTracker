@@ -34,10 +34,9 @@ import java.util.Set;
 
 public class PinView extends SubsamplingScaleImageView {
 
-    private Context context;
     private HashMap hm;
-    private int pinId = -1;
-    private Pin currentPin = null;
+    private int pinId;
+    private Pin currentPin;
     private Paint paint;
     private Paint selectedPaint;
 
@@ -47,17 +46,18 @@ public class PinView extends SubsamplingScaleImageView {
 
     public PinView(Context context, AttributeSet attr) {
         super(context, attr);
-        this.context = context;
         initialise();
     }
 
     private void initialise() {
         hm = new HashMap();
+        pinId = -1;
+        currentPin = null;
         paint = new Paint();
         paint.setTextSize(30);
         paint.setAntiAlias(true);
         selectedPaint = new Paint(paint);
-        selectedPaint.setColor(ContextCompat.getColor(context, R.color.colorAccent));
+        selectedPaint.setColor(ContextCompat.getColor(this.getContext(), R.color.colorAccent));
     }
 
     public void newPin(String label, PointF location) {
@@ -147,6 +147,7 @@ public class PinView extends SubsamplingScaleImageView {
                         if (me != null && (int) me.getKey() > -1 && (Pin) me.getValue() != null) {
                             Pin pin = (Pin) me.getValue();
                             PointF vPin = sourceToViewCoord(pin.getLocation());
+                            if (vPin == null) { continue; }
                             float pinXmin = vPin.x - (pin.getIcon().getWidth() / 2);
                             float pinXmax = vPin.x + (pin.getIcon().getWidth() / 2);
                             float pinYmin = vPin.y - pin.getIcon().getHeight();
