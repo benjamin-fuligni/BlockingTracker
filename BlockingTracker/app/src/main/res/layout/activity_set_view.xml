@@ -54,5 +54,11 @@
         app:layout_anchorGravity="bottom|center_horizontal"
         app:srcCompat="@drawable/ic_delete_forever_white_24dp" />
 
+    <TextView
+        android:id="@+id/cheeapHack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
 
 </android.support.design.widget.CoordinatorLayout>

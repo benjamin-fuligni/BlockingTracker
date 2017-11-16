@@ -1,6 +1,8 @@
 package io.github.benjamin_fuligni.blockingtracker;
 
 import android.Manifest;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -21,6 +23,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import android.graphics.*;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -65,7 +69,14 @@ public class SetActivity extends AppCompatActivity {
         addPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageView.newPin("Ophelia", new PointF(100f, 100f));
+                FragmentManager manager = getFragmentManager();
+                Fragment frag = manager.findFragmentById(R.id.prompt);
+                if (frag != null) {
+                    manager.beginTransaction().remove(frag).commit();
+                }
+                CustomDialogueFragment editNameDialog = new CustomDialogueFragment();
+                editNameDialog.show(manager, "fragment_edit_name");
+
             }
         });
 
