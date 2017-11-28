@@ -158,6 +158,8 @@ public class SetActivity extends AppCompatActivity {
                 }
                 Intent i = new Intent(
                         Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                //BUG: couldn't find intent.
+                //POSSIBLE FIX: check for i to be null, if so just call this for intent
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
                 return true;
             case R.id.action_settings:
