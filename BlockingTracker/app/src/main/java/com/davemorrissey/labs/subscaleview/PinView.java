@@ -71,28 +71,6 @@ public class PinView extends SubsamplingScaleImageView {
         invalidate();
     }
 
-    /*
-    public boolean setPinLocation(int id, PointF location) {
-        Pin pin = (Pin)hm.get(id);
-        if (pin == null) {
-            return false;
-        }
-        pin.setLocation(location);
-        hm.put(id, pin);
-        return true;
-    }
-
-    public HashMap getHm() {
-        return hm;
-    }
-
-    public PointF getPinLocation(int id, PointF location) {
-        Pin pin = (Pin)hm.get(id);
-        if (pin == null) { return null; }
-        return pin.getLocation();
-    }
-    */
-
     public List<Pin> getPins () {
         List<Pin> pins = new ArrayList<>();
         Set set = hm.entrySet();
