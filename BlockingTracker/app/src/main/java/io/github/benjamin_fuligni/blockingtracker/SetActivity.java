@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,10 +20,6 @@ import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.PinView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import android.graphics.*;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -65,7 +60,7 @@ public class SetActivity extends AppCompatActivity {
             imageView.setImage(ImageSource.uri(picturePath));
         }
 
-        FloatingActionButton addPin = (FloatingActionButton) findViewById(R.id.addPin);
+        FloatingActionButton addPin = (FloatingActionButton) findViewById(R.id.trackBlockingButton);
         addPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

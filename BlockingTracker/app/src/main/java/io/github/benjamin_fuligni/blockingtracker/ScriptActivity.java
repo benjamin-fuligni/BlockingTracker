@@ -3,27 +3,20 @@ package io.github.benjamin_fuligni.blockingtracker;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
-
-import com.davemorrissey.labs.subscaleview.ImageSource;
-import com.davemorrissey.labs.subscaleview.PinView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,12 +50,11 @@ public class ScriptActivity extends AppCompatActivity {
         TextView tv = (TextView)findViewById(R.id.script);
         String scriptText = dbManager.get("script");
         if (scriptText == null) {
-            dbManager.insert("script", STRING_HELP_TEXT);
-            scriptText = dbManager.get("script");
-        } else if (!scriptText.equals(STRING_HELP_TEXT)) {
-            scriptSelected = true;
+            startScreen();
+        } else {
+            scriptScreen();
+            tv.setText(scriptText);
         }
-        tv.setText(scriptText);
 
         footnoteNum = dbManager.get("footnoteNum");
         if (footnoteNum == null) {
@@ -70,18 +62,23 @@ public class ScriptActivity extends AppCompatActivity {
             footnoteNum = dbManager.get("footnoteNum");
         }
 
-        Button fab = (Button) findViewById(R.id.addPin);
-        if (!scriptSelected) {
-            fab.setVisibility(View.GONE);
-        }
+        Button selectScriptButton = (Button)findViewById(R.id.selectScriptButton);
+        selectScriptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startScriptSelector();
+            }
+        });
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        Button trackBlockingButton = (Button) findViewById(R.id.trackBlockingButton);
+        trackBlockingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int pulledNum = 0;
                 TextView tv = (TextView) findViewById(R.id.script);
                 int start, end;
                 CharSequence selection = "";
+
                 if (tv.isFocused()) {
                     int selStart = tv.getSelectionStart();
                     int selEnd = tv.getSelectionEnd();
@@ -125,21 +122,7 @@ public class ScriptActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.changeScript:
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    // Should we show an explanation?
-                    if (shouldShowRequestPermissionRationale(
-                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        // Explain to the user why we need to read the contacts
-                    }
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                    // app-defined int constant that should be quite unique
-                }
-                Intent openDocumentIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                openDocumentIntent.setType("text/plain");
-                startActivityForResult(openDocumentIntent, REQUEST_TEXT_GET);
+                startScriptSelector();
                 return true;
             case R.id.scriptInstructions:
                 Intent scriptInstructionsIntent = new Intent(ScriptActivity.this, ScriptInstructionsActivity.class);
@@ -162,12 +145,13 @@ public class ScriptActivity extends AppCompatActivity {
         if (requestCode == REQUEST_TEXT_GET && resultCode == RESULT_OK && data != null) {
             Uri uri = data.getData();
             String fileContent = readTextFile(uri);
+
+            scriptScreen();
+
             TextView script = (TextView) findViewById(R.id.script);
             script.setText(fileContent);
-            Button fab = (Button) findViewById(R.id.addPin);
-            fab.setVisibility(View.VISIBLE);
-            scriptSelected = true;
             dbManager.update("script", fileContent);
+
             dbManager.update("footnoteNum", "0");
             footnoteNum = "0";
         }
@@ -198,5 +182,38 @@ public class ScriptActivity extends AppCompatActivity {
             }
         }
         return builder.toString();
+    }
+
+    private void startScriptSelector() {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }
+        Intent openDocumentIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        openDocumentIntent.setType("text/plain");
+        startActivityForResult(openDocumentIntent, REQUEST_TEXT_GET);
+    }
+
+    // Changes the visibility of elements so that the start screen is shown instead of the script
+    private void startScreen() {
+        LinearLayout selectScriptLayout = (LinearLayout)findViewById(R.id.selectScript);
+        ScrollView scriptScrollView = (ScrollView) findViewById(R.id.scriptScrollView);
+        Button trackBlockingButton = (Button) findViewById(R.id.trackBlockingButton);
+
+        selectScriptLayout.setVisibility(View.VISIBLE);
+        scriptScrollView.setVisibility(View.GONE);
+        trackBlockingButton.setVisibility(View.GONE);
+    }
+
+    // Changes the visibility of elements so that the script is shown instead of the start screen
+    private void scriptScreen() {
+        LinearLayout selectScriptLayout = (LinearLayout)findViewById(R.id.selectScript);
+        ScrollView scriptScrollView = (ScrollView) findViewById(R.id.scriptScrollView);
+        Button trackBlockingButton = (Button) findViewById(R.id.trackBlockingButton);
+
+        selectScriptLayout.setVisibility(View.GONE);
+        scriptScrollView.setVisibility(View.VISIBLE);
+        trackBlockingButton.setVisibility(View.VISIBLE);
     }
 }
