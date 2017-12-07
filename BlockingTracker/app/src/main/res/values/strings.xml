@@ -20,17 +20,28 @@
         "we provide a simple image template onto which actor blocking can be recorded simply "
         "and efficiently, using modular icons that can be changed with ease.\n\n"
 
-        "INSTRUCTIONS:\n"
-        "In the Script View, highlight a portion of text to record the actors' positions at "
-        "that moment. This will take you to the Set View, where you can hit the \"+\" button to add "
-        "an actor label and a dot representing their location. Tap once on a dot to select it, "
-        "then either elsewhere on the set to move it, or on the trash can icon to delete it. "
-        "Once you are done with a segment, hit the save icon to save it and return to the Script "
-        "View. To return to a blocking point, simply highlight just the footnote in the Script "
-        "View at the point you want to return to.\n\n"
-
         "Blocking Tracker is the creation of Ben Fuligni and Selena Groh for Tufts University’s "
         "Mobile Development course (Fall 2017) taught by Ming Chow. "
         "Much gratitude and acknowledgement to Ming Chow and our fellow students.\n\n"
+    </string>
+    <string name="title_activity_script_instructions">Script Instructions</string>
+    <string name="script_instructions_text">
+        "To add new blocking:\n"
+        "1. Highlight the portion of text which is associated with the blocking.\n"
+        "2. Press the \"Track Blocking\" button. This will take you to the blocking page, where you can record the actors' positions at that moment.\n"
+        "\nTo revisit previously entered blocking:\n"
+        "1. Highlight just the footnote in the script associated with the blocking. For instance, \"[1]\".\n"
+        "2. Press the \"Track Blocking\" button. This will take you to the blocking associated with that footnote.\n"
+    </string>
+    <string name="title_activity_set_instructions">Set Instructions</string>
+    <string name="set_instructions_text">
+        "To add a new actor dot:\n"
+        "Press the \"+\" button and enter an actor label. By default, the actor dot appears in the top left.\n"
+        "\nTo move an actor dot:\n"
+        "Tap once on a dot to select it (it will change colors when selected), then tap again where you want to move it.\n"
+        "\nTo delete an actor dot:\n"
+        "Tap once on a dot to select it (it will change colors when selected), then press the trash can icon to delete it.\n"
+        "\nTo save the blocking and return to the script:\n"
+        "Press the save icon to save the dots' positions where they currently are, and associate them with the selected point in the script.\n"
     </string>
 </resources>

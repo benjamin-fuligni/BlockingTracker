@@ -114,6 +114,7 @@ public class ScriptActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_script, menu);
         menu.findItem(R.id.changeFloorplan).setVisible(false);
+        menu.findItem(R.id.setInstructions).setVisible(false);
         return true;
     }
 
@@ -139,6 +140,10 @@ public class ScriptActivity extends AppCompatActivity {
                 Intent openDocumentIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 openDocumentIntent.setType("text/plain");
                 startActivityForResult(openDocumentIntent, REQUEST_TEXT_GET);
+                return true;
+            case R.id.scriptInstructions:
+                Intent scriptInstructionsIntent = new Intent(ScriptActivity.this, ScriptInstructionsActivity.class);
+                startActivity(scriptInstructionsIntent);
                 return true;
             case R.id.about:
                 Intent settingsIntent = new Intent(ScriptActivity.this, AboutActivity.class);

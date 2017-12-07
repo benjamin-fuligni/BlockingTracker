@@ -40,6 +40,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.github.benjamin_fuligni.blockingtracker.ScriptActivity" />
         </activity>
+        <activity
+            android:name=".ScriptInstructionsActivity"
+            android:label="@string/title_activity_script_instructions"
+            android:parentActivityName=".ScriptActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.benjamin_fuligni.blockingtracker.ScriptActivity" />
+        </activity>
+        <activity
+            android:name=".SetInstructionsActivity"
+            android:label="@string/title_activity_set_instructions"
+            android:parentActivityName=".SetActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.benjamin_fuligni.blockingtracker.SetActivity" />
+        </activity>
     </application>
 
 </manifest>

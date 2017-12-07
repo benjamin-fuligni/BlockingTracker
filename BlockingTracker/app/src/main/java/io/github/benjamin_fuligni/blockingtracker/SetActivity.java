@@ -134,6 +134,7 @@ public class SetActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_script, menu);
         menu.findItem(R.id.changeScript).setVisible(false);
+        menu.findItem(R.id.scriptInstructions).setVisible(false);
         return true;
     }
 
@@ -161,6 +162,10 @@ public class SetActivity extends AppCompatActivity {
                 //BUG: couldn't find intent.
                 //POSSIBLE FIX: check for i to be null, if so just call this for intent
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
+                return true;
+            case R.id.setInstructions:
+                Intent setInstructionsIntent = new Intent(SetActivity.this, SetInstructionsActivity.class);
+                startActivity(setInstructionsIntent);
                 return true;
             case R.id.about:
                 Intent settingsIntent = new Intent(SetActivity.this, AboutActivity.class);

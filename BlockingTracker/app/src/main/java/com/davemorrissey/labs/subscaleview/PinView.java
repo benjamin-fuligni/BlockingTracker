@@ -126,10 +126,10 @@ public class PinView extends SubsamplingScaleImageView {
                             Pin pin = (Pin) me.getValue();
                             PointF vPin = sourceToViewCoord(pin.getLocation());
                             if (vPin == null) { continue; }
-                            float pinXmin = vPin.x - (pin.getIcon().getWidth() / 2);
-                            float pinXmax = vPin.x + (pin.getIcon().getWidth() / 2);
-                            float pinYmin = vPin.y - pin.getIcon().getHeight();
-                            float pinYmax = vPin.y;
+                            float pinXmin = vPin.x - (pin.getIcon().getWidth() * 1.5f);
+                            float pinXmax = vPin.x + (pin.getIcon().getWidth() * 1.5f);
+                            float pinYmin = vPin.y - (pin.getIcon().getHeight() * 2.5f);
+                            float pinYmax = vPin.y + (pin.getIcon().getHeight() * 0.5f);
                             // check all the bounds of the pin (square)
                             if (X > pinXmin && X < pinXmax && Y > pinYmin && Y < pinYmax) {
                                 pinId = pin.getPinId();
