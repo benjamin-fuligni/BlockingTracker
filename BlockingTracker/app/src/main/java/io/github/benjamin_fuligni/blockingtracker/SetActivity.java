@@ -162,7 +162,9 @@ public class SetActivity extends AppCompatActivity {
                 //POSSIBLE FIX: check for i to be null, if so just call this for intent
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
                 return true;
-            case R.id.action_settings:
+            case R.id.about:
+                Intent settingsIntent = new Intent(SetActivity.this, AboutActivity.class);
+                startActivity(settingsIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

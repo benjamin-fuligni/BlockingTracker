@@ -16,7 +16,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:text="Enter Pin Label"/>
+        android:text="Enter Character Name for Pin"/>
 
     <EditText
         android:id="@+id/name"

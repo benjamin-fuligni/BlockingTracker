@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -33,12 +34,14 @@ public class ScriptActivity extends AppCompatActivity {
     public static final String TEXT_SELECTED = "io.github.benjamin_fuligni.TEXTSELECTED";
     public static final String NUMBER_INSERT = "io.github.benjamin_fuligni.NUMBERINSERT";
     public static final String DATABASE_INSERT = "io.github.benjamin_fuligni.DATABASEINSERT";
+    public static final String STRING_HELP_TEXT = "Please select a script by clicking on the three dots in the top right corner and selecting a .txt file from your device.";
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
     private static final int REQUEST_TEXT_GET = 3;
     private String footnoteNum;
     private DBManager dbManager;
+    private boolean scriptSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +57,10 @@ public class ScriptActivity extends AppCompatActivity {
         TextView tv = (TextView)findViewById(R.id.script);
         String scriptText = dbManager.get("script");
         if (scriptText == null) {
-            dbManager.insert("script", "Please select a script.");
+            dbManager.insert("script", STRING_HELP_TEXT);
             scriptText = dbManager.get("script");
+        } else if (!scriptText.equals(STRING_HELP_TEXT)) {
+            scriptSelected = true;
         }
         tv.setText(scriptText);
 
@@ -65,7 +70,11 @@ public class ScriptActivity extends AppCompatActivity {
             footnoteNum = dbManager.get("footnoteNum");
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addPin);
+        Button fab = (Button) findViewById(R.id.addPin);
+        if (!scriptSelected) {
+            fab.setVisibility(View.GONE);
+        }
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,11 +136,13 @@ public class ScriptActivity extends AppCompatActivity {
                     // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
                     // app-defined int constant that should be quite unique
                 }
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.setType("text/plain");
-                startActivityForResult(intent, REQUEST_TEXT_GET);
+                Intent openDocumentIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                openDocumentIntent.setType("text/plain");
+                startActivityForResult(openDocumentIntent, REQUEST_TEXT_GET);
                 return true;
-            case R.id.action_settings:
+            case R.id.about:
+                Intent settingsIntent = new Intent(ScriptActivity.this, AboutActivity.class);
+                startActivity(settingsIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -148,6 +159,9 @@ public class ScriptActivity extends AppCompatActivity {
             String fileContent = readTextFile(uri);
             TextView script = (TextView) findViewById(R.id.script);
             script.setText(fileContent);
+            Button fab = (Button) findViewById(R.id.addPin);
+            fab.setVisibility(View.VISIBLE);
+            scriptSelected = true;
             dbManager.update("script", fileContent);
             dbManager.update("footnoteNum", "0");
             footnoteNum = "0";

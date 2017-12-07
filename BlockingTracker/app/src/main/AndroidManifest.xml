@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.github.benjamin_fuligni.blockingtracker">
 
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,14 +25,21 @@
         <activity
             android:name=".SetActivity"
             android:label="@string/title_activity_set_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="4f384e5f398588994d3868fdd2735ea164d128ed" />
-    </application>
 
-    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".ScriptActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.benjamin_fuligni.blockingtracker.ScriptActivity" />
+        </activity>
+    </application>
 
 </manifest>

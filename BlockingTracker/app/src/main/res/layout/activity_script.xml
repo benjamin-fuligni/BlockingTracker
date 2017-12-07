@@ -20,14 +20,19 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <Button
         android:id="@+id/addPin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:visibility="visible"
-        app:srcCompat="@drawable/magnifying_glass" />
+        android:background="@color/colorAccent"
+        android:padding="@dimen/fab_margin"
+        android:text="Track Blocking"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:visibility="visible" />
 
     <include layout="@layout/content_script" />
 
