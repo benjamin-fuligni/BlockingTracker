@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+//only is shown when user has not selected a script to begin working.
 public class AboutActivity extends AppCompatActivity {
 
     @Override

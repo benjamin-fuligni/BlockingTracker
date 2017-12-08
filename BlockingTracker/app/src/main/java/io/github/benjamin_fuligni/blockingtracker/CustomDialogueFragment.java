@@ -18,14 +18,11 @@ import com.davemorrissey.labs.subscaleview.PinView;
  * Created by bibli on 11/15/2017.
  */
 
+//used to create the dialogue box for labeling pins
 public class CustomDialogueFragment extends DialogFragment implements TextView.OnEditorActionListener {
 
     private EditText mEditText;
 
-
-    public interface UserNameListener {
-        void onFinishUserDialog(String user);
-    }
 
     // Empty constructor required for DialogFragment
     public CustomDialogueFragment() {}
@@ -46,11 +43,12 @@ public class CustomDialogueFragment extends DialogFragment implements TextView.O
         return view;
     }
 
+    //called once the dialogue box is exited
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        // Return input text to activity
         Activity activity = getActivity();
         this.dismiss();
+        //Pin added here instead of Set Activity for code conciseness
         ((PinView)activity.findViewById(R.id.imageView)).newPin(mEditText.getText().toString(),
                 new PointF(100f, 100f));
         return true;

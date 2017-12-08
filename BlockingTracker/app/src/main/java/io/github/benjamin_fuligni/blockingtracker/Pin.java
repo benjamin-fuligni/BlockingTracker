@@ -23,6 +23,8 @@ import java.util.Set;
  * Created by Selena on 10/31/2017.
  */
 
+//one of our creations
+//Used on top of the PinView Class to add the capability to more easily track multiple pins
 public class Pin extends Object {
 
     private String label;

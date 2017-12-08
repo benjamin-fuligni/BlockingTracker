@@ -11,24 +11,30 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+// A Wrapper class to make database management in the app far easier
 public class DBManager {
 
     private FeedReaderDbHelper dbHelper;
     private Context context;
     private SQLiteDatabase database;
 
+    //No default constructor
     public DBManager(Context c) { context = c; }
 
+    //opens a writable database so user doesn't need to keep track of readable/writable
     public DBManager open() throws SQLException {
         dbHelper = new FeedReaderDbHelper(context);
         database = dbHelper.getWritableDatabase();
         return this;
     }
 
+    //pretty self explanatory
     public void close() {
         dbHelper.close();
     }
 
+    //returns the index of insertion if successful; -1 if not
+    //if an entry with the same title exists, changes data for that entry rather than creating a new one
     public int insert(String title, String subtitle) {
         Cursor cursor = this.fetch();
         int index = -1;
@@ -52,6 +58,7 @@ public class DBManager {
         return index;
     }
 
+    //again, abstracts away readble/writable databases for user
     public Cursor fetch() {
         String[] columns = new String[] { FeedReaderContract.FeedEntry._ID, FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, FeedReaderContract.FeedEntry.COLUMN_NAME_SUBTITLE};
         Cursor cursor = database.query(FeedReaderContract.FeedEntry.TABLE_NAME, columns, null, null, null, null, null);
@@ -61,9 +68,10 @@ public class DBManager {
         return cursor;
     }
 
+
+    //returns the data associated with a specific title, to avoid fenagling with indices
     public String get(String title) {
         Cursor cursor = this.fetch();
-        int index = -1;
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             if (title.equals(cursor.getString(cursor.getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)))) {
@@ -77,6 +85,7 @@ public class DBManager {
         return null;
     }
 
+    //updates the db entry with "name" title
     public int update(String name, String desc) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, name);
@@ -85,10 +94,13 @@ public class DBManager {
         return i;
     }
 
+
+    //delete from a specific index in the database
     public void delete(long _id) {
         database.delete(FeedReaderContract.FeedEntry.TABLE_NAME, FeedReaderContract.FeedEntry._ID + " = " + _id, null);
     }
 
+    //empties database without deleting the address
     public void deleteAll() {
         database.delete(FeedReaderContract.FeedEntry.TABLE_NAME, null, null);
     }

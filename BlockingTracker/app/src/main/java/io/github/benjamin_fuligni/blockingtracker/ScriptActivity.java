@@ -44,9 +44,11 @@ public class ScriptActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //sets up database
         dbManager = new DBManager(getApplicationContext());
         dbManager.open();
 
+        //redirects to AboutActivity if no script selected
         TextView tv = (TextView)findViewById(R.id.script);
         String scriptText = dbManager.get("script");
         if (scriptText == null) {
@@ -56,6 +58,7 @@ public class ScriptActivity extends AppCompatActivity {
             tv.setText(scriptText);
         }
 
+        //gets the next number to insert as a footnote
         footnoteNum = dbManager.get("footnoteNum");
         if (footnoteNum == null) {
             dbManager.insert("footnoteNum", "0");
@@ -70,6 +73,7 @@ public class ScriptActivity extends AppCompatActivity {
             }
         });
 
+        //opens previously saved blocking if user has selected a footnote, inserts new footnote & starts on blank stage otherwise
         Button trackBlockingButton = (Button) findViewById(R.id.trackBlockingButton);
         trackBlockingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +110,8 @@ public class ScriptActivity extends AppCompatActivity {
         });
     }
 
+    //following two methods set up menu functionality
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -136,6 +142,8 @@ public class ScriptActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    //following three methods together allow for the user to select a script
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

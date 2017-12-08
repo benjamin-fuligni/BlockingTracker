@@ -50,6 +50,8 @@ public class SetActivity extends AppCompatActivity {
         dbManager = new DBManager(getApplicationContext());
         dbManager.open();
 
+        //loads set image
+        //POSSIBLE TODO: allow users to revert to default image
         imageView = (PinView) findViewById(R.id.imageView);
         String picturePath = dbManager.get("set");
         if (picturePath == null) {
@@ -61,6 +63,7 @@ public class SetActivity extends AppCompatActivity {
             imageView.setImage(ImageSource.uri(picturePath));
         }
 
+        //creates the button to add pins representing actors
         FloatingActionButton addPin = (FloatingActionButton) findViewById(R.id.trackBlockingButton);
         addPin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +79,7 @@ public class SetActivity extends AppCompatActivity {
             }
         });
 
+        //loads saved pins if activity is loaded from selecting a footnote
         currentRecord = number;
         if (dbTitle != 0) {
             Cursor cursor = dbManager.fetch();
@@ -102,6 +106,7 @@ public class SetActivity extends AppCompatActivity {
             cursor.close();
         }
 
+        //creates button to save all pins and return to scriptview
         FloatingActionButton saveButton = (FloatingActionButton) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +120,7 @@ public class SetActivity extends AppCompatActivity {
             }
         });
 
+        //deletes selected pin
         FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +129,8 @@ public class SetActivity extends AppCompatActivity {
             }
         });
     }
+
+    //following two methods create functionality for menu
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -165,6 +173,7 @@ public class SetActivity extends AppCompatActivity {
         }
     }
 
+    //allows users to select a set image
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

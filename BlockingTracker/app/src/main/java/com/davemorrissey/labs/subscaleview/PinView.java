@@ -32,6 +32,8 @@ import java.util.Set;
  * Created by Selena on 10/31/2017.
  */
 
+//slightly modified class from Dave Morrissey's packages pulled from GitHub
+//Used in place of the traditional ImageView for the SetView
 public class PinView extends SubsamplingScaleImageView {
 
     private HashMap hm;
@@ -71,6 +73,7 @@ public class PinView extends SubsamplingScaleImageView {
         invalidate();
     }
 
+    //an addition of ours; his normally only supports a single static Pin
     public List<Pin> getPins () {
         List<Pin> pins = new ArrayList<>();
         Set set = hm.entrySet();
@@ -97,6 +100,9 @@ public class PinView extends SubsamplingScaleImageView {
         return false;
     }
 
+    //another addition of ours
+    //because we need to be able to move pins, this function checks the bounds of current pins and
+    // selects/transplants a pin based on where the user touches
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         int eventaction = event.getAction();

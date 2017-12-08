@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
  * Created by bibli on 11/2/2017.
  */
 
+//interface for FeedReaderDbHelper
 public class FeedReaderContract {
 
     // To prevent someone from accidentally instantiating the contract class,

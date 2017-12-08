@@ -14,6 +14,7 @@ import java.util.List;
  * Created by Selena on 11/2/2017.
  */
 
+//used in conjunction with DBManager to actually create the database
 public class FeedReaderDbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_ENTRIES =
@@ -46,6 +47,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    //function that was worked around in later builds
     public void addPoint(PointF p) {
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -55,6 +57,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         DB.close();
     }
 
+    //function that was worked around in later builds
     public List<PointF> getPoints() {
         SQLiteDatabase DB = this.getReadableDatabase();
         List<PointF> points = new ArrayList<PointF>();
